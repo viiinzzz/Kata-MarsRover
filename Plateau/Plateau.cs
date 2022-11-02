@@ -22,6 +22,15 @@ public record class Plateau(int Width, int Height)
             int.Parse(SizeRx.Match(size).Groups["Height"].Value)
         );
         //TODO: parse fleet
+        while (lines.Count > 0)
+        {
+            var status = lines.First();
+            lines.RemoveAt(0);
+            var move = lines.First();
+            lines.RemoveAt(0);
+            var rover = new Rover(status, this);
+            Rovers.Add(rover);
+        }
     }
 
     public string Result => throw new NotImplementedException();

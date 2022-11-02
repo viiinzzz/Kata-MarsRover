@@ -113,8 +113,8 @@ public class PlateauTest
     public void check_Rover_move_forward_when_heading_east()
     {
         var plateau = new Plateau("10 10");
-        var rover = new Rover("6 5 E", plateau);
+        var rover = new Rover("5 5 E", plateau);
         rover.Move(Move.M);
-        Check.That(rover.Status).IsEqualTo("5 6 E");
+        Check.That(rover.Status).IsEqualTo("6 5 E");
     }
 }

@@ -41,7 +41,14 @@ public record class Rover(Plateau Plateau)
         {
             MarsRover.Move.L => (PositionX, PositionY, Turn(false)),
             MarsRover.Move.R => (PositionX, PositionY, Turn(true)),
-            MarsRover.Move.M => (PositionX, PositionY, Direction), //we don't know yet how to move forward
+            MarsRover.Move.M => Direction switch
+            {
+                Direction.N => (PositionX, PositionY + 1, Direction),
+                Direction.W => (PositionX - 1, PositionY, Direction),
+                Direction.S => (PositionX, PositionY - 1, Direction),
+                Direction.E => (PositionX + 1, PositionY, Direction),
+                _ => throw new NotImplementedException()
+            },
             _ => throw new NotImplementedException()
         };
     }

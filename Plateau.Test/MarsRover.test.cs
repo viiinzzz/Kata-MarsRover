@@ -14,6 +14,22 @@ public class PlateauTest
     }
 
     [Fact]
+    public void check_Plateau_size()
+    {
+        var plateau = new Plateau(10, 10);
+        Check.That(plateau.width).IsEqualTo(10);
+        Check.That(plateau.height).IsEqualTo(10);
+    }
+
+    [Fact]
+    public void check_Plateau_size_when_initialized_with_string()
+    {
+        var plateau = new Plateau("10 10");
+        Check.That(plateau.width).IsEqualTo(10);
+        Check.That(plateau.height).IsEqualTo(10);
+    }
+
+    [Fact]
     public void create_Rover()
     {
         var plateau = new Plateau(10, 10);

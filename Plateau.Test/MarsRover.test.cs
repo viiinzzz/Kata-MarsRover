@@ -44,4 +44,11 @@ public class PlateauTest
         var rover = new Rover(5, 5, Heading.E, plateau);
         Check.That(rover.Status).IsEqualTo("5 5 E");
     }
+    [Fact]
+    public void check_Rover_initial_status_when_initialized_with_string()
+    {
+        var plateau = new Plateau("10 10");
+        var rover = new Rover("5 5 E", plateau);
+        Check.That(rover.Status).IsEqualTo("5 5 E");
+    }
 }

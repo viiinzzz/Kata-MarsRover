@@ -9,6 +9,6 @@ public class PlateauTest
     [Fact]
     public void Test1()
     {
-        Check.That(new Plateau()).IsNotEqualTo(null);
+        Check.That(new Plateau(10, 10)).IsNotEqualTo(null);
     }
 }

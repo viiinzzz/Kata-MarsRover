@@ -3,20 +3,8 @@ using System.Text.RegularExpressions;
 
 namespace MarsRover;
 
-public enum Direction
-{
-    N,
-    W,
-    S,
-    E
-}
-
-public enum Move
-{
-    L,
-    R,
-    M
-}
+public enum Direction { N, W, S, E }
+public enum Move { L, R,  M }
 
 public record class Rover(Plateau Plateau)
 {
@@ -51,9 +39,9 @@ public record class Rover(Plateau Plateau)
     {
         (PositionX, PositionY, Direction) = move switch
         {
-            MarsRover.Move.L => (PositionX, PositionY, Heading: Direction), //we don't know yet how to turn left
-            MarsRover.Move.R => (PositionX, PositionY, Heading: Direction), //we don't know yet how to turn right
-            MarsRover.Move.M => (PositionX, PositionY, Heading: Direction), //we don't know yet how to move forward
+            MarsRover.Move.L => (PositionX, PositionY, (Direction)(((int)Direction + 1) % 4)),
+            MarsRover.Move.R => (PositionX, PositionY, (Direction)((((int)Direction - 1) + 4) % 4)),
+            MarsRover.Move.M => (PositionX, PositionY, Direction), //we don't know yet how to move forward
             _ => throw new NotImplementedException()
         };
     }

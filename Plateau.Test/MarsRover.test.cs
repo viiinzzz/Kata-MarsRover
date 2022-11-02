@@ -57,13 +57,13 @@ public class PlateauTest
     {
         var plateau = new Plateau("1 1");
         var rover = new Rover("0 0 N", plateau);
-        rover.Move(Move.L);
+        rover.Do(Move.L);
         Check.That(rover.Status).IsEqualTo("0 0 W");
-        rover.Move(Move.L);
+        rover.Do(Move.L);
         Check.That(rover.Status).IsEqualTo("0 0 S");
-        rover.Move(Move.L);
+        rover.Do(Move.L);
         Check.That(rover.Status).IsEqualTo("0 0 E");
-        rover.Move(Move.L);
+        rover.Do(Move.L);
         Check.That(rover.Status).IsEqualTo("0 0 N");
     }
 
@@ -72,13 +72,13 @@ public class PlateauTest
     {
         var plateau = new Plateau("1 1");
         var rover = new Rover("0 0 N", plateau);
-        rover.Move(Move.R);
+        rover.Do(Move.R);
         Check.That(rover.Status).IsEqualTo("0 0 E");
-        rover.Move(Move.R);
+        rover.Do(Move.R);
         Check.That(rover.Status).IsEqualTo("0 0 S");
-        rover.Move(Move.R);
+        rover.Do(Move.R);
         Check.That(rover.Status).IsEqualTo("0 0 W");
-        rover.Move(Move.R);
+        rover.Do(Move.R);
         Check.That(rover.Status).IsEqualTo("0 0 N");
     }
 
@@ -87,7 +87,7 @@ public class PlateauTest
     {
         var plateau = new Plateau("10 10");
         var rover = new Rover("5 5 N", plateau);
-        rover.Move(Move.M);
+        rover.Do(Move.M);
         Check.That(rover.Status).IsEqualTo("5 6 N");
     }
 
@@ -96,7 +96,7 @@ public class PlateauTest
     {
         var plateau = new Plateau("10 10");
         var rover = new Rover("5 5 W", plateau);
-        rover.Move(Move.M);
+        rover.Do(Move.M);
         Check.That(rover.Status).IsEqualTo("4 5 W");
     }
 
@@ -105,7 +105,7 @@ public class PlateauTest
     {
         var plateau = new Plateau("10 10");
         var rover = new Rover("5 5 S", plateau);
-        rover.Move(Move.M);
+        rover.Do(Move.M);
         Check.That(rover.Status).IsEqualTo("5 4 S");
     }
 
@@ -114,7 +114,7 @@ public class PlateauTest
     {
         var plateau = new Plateau("10 10");
         var rover = new Rover("5 5 E", plateau);
-        rover.Move(Move.M);
+        rover.Do(Move.M);
         Check.That(rover.Status).IsEqualTo("6 5 E");
     }
 }

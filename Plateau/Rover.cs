@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using System.Text.RegularExpressions;
+﻿using System.Text.RegularExpressions;
 
 namespace MarsRover;
 
@@ -35,25 +34,34 @@ public record class Rover(Plateau Plateau)
 
     public string Status => $"{PositionX} {PositionY} {Direction}";
 
-    public void Move(Move move) => (PositionX, PositionY, Direction) = move switch {
-        MarsRover.Move.L => (PositionX, PositionY, Turn(false)),
-        MarsRover.Move.R => (PositionX, PositionY, Turn(true)),
-        MarsRover.Move.M => Direction switch {
+    public void Do(Move move) => (PositionX, PositionY, Direction) = move switch {
+        Move.R => Turn(true),
+        Move.L => Turn(false),
+        Move.M => Direction switch {
             Direction.N => MoveY(true),
-            Direction.W => (PositionX - 1, PositionY, Direction),
-            Direction.S => (PositionX, PositionY - 1, Direction),
+            Direction.S => MoveY(false),
             Direction.E => MoveX(true),
+            Direction.W => MoveX(false),
             _ => throw new NotImplementedException()
         },
         _ => throw new NotImplementedException()
     };
 
-    private (int PositionX, int PositionY, Direction Direction) MoveX(bool positive)
-        => (PositionX + (positive ? 1 : -1), PositionY, Direction);
+    private (int PositionX, int PositionY, Direction Direction) MoveX(bool right) => (
+        PositionX + (right ? 1 : -1),
+        PositionY,
+        Direction
+        );
 
-    private (int PositionX, int PositionY, Direction Direction) MoveY(bool positive)
-        => (PositionX, PositionY + (positive ? 1 : -1), Direction);
+    private (int PositionX, int PositionY, Direction Direction) MoveY(bool up) => (
+        PositionX,
+        PositionY + (up ? 1 : -1),
+        Direction
+        );
 
-    private Direction Turn(bool clockwise)
-        => (Direction)(((int)Direction + (clockwise ? - 1 : 1) + 4) % 4);
+    private (int PositionX, int PositionY, Direction Direction) Turn(bool clockwise) => (
+        PositionX,
+        PositionY,
+        (Direction)(((int)Direction + (clockwise ? - 1 : 1) + 4) % 4)
+        );
 }

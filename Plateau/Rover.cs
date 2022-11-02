@@ -35,23 +35,24 @@ public record class Rover(Plateau Plateau)
 
     public string Status => $"{PositionX} {PositionY} {Direction}";
 
-    public void Move(Move move)
-    {
-        (PositionX, PositionY, Direction) = move switch
-        {
-            MarsRover.Move.L => (PositionX, PositionY, Turn(false)),
-            MarsRover.Move.R => (PositionX, PositionY, Turn(true)),
-            MarsRover.Move.M => Direction switch
-            {
-                Direction.N => (PositionX, PositionY + 1, Direction),
-                Direction.W => (PositionX - 1, PositionY, Direction),
-                Direction.S => (PositionX, PositionY - 1, Direction),
-                Direction.E => (PositionX + 1, PositionY, Direction),
-                _ => throw new NotImplementedException()
-            },
+    public void Move(Move move) => (PositionX, PositionY, Direction) = move switch {
+        MarsRover.Move.L => (PositionX, PositionY, Turn(false)),
+        MarsRover.Move.R => (PositionX, PositionY, Turn(true)),
+        MarsRover.Move.M => Direction switch {
+            Direction.N => MoveY(true),
+            Direction.W => (PositionX - 1, PositionY, Direction),
+            Direction.S => (PositionX, PositionY - 1, Direction),
+            Direction.E => MoveX(true),
             _ => throw new NotImplementedException()
-        };
-    }
+        },
+        _ => throw new NotImplementedException()
+    };
+
+    private (int PositionX, int PositionY, Direction Direction) MoveX(bool positive)
+        => (PositionX + (positive ? 1 : -1), PositionY, Direction);
+
+    private (int PositionX, int PositionY, Direction Direction) MoveY(bool positive)
+        => (PositionX, PositionY + (positive ? 1 : -1), Direction);
 
     private Direction Turn(bool clockwise)
         => (Direction)(((int)Direction + (clockwise ? - 1 : 1) + 4) % 4);

@@ -119,6 +119,26 @@ public class PlateauTest
     }
 
     [Fact]
+    public void check_Rover_multiple_moves()
+    {
+        var plateau = new Plateau("10 10");
+        var rover = new Rover("5 5 S", plateau);
+        rover.Do("LMRMMRRR");
+        /*
+        5 5 S
+        L -> 5 5 E
+        M -> 6 5 E
+        R -> 6 5 S
+        M -> 6 4 S
+        M -> 6 3 S
+        R -> 6 3 W
+        R -> 6 3 N
+        R -> 6 3 E
+         */
+        Check.That(rover.Status).IsEqualTo("6 3 E");
+    }
+
+    [Fact]
     public void check_Plateau_Fleet()
     {
         const string input = @"

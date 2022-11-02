@@ -18,11 +18,11 @@ public record class Rover(Plateau Plateau)
         Direction = direction;
     }
 
-    private static readonly string AllHeadings = Enum.GetValues(typeof(Direction))
+    private static readonly string AllDirections = Enum.GetValues(typeof(Direction))
         .Cast<Direction>().Select(x => $"{x}")
         .Aggregate((x, y) => x + y);
 
-    private static readonly Regex StatusRx = new Regex(@$"(?<PositionX>\d+) (?<PositionY>\d+) (?<Direction>[{AllHeadings}])");
+    private static readonly Regex StatusRx = new Regex(@$"(?<PositionX>\d+) (?<PositionY>\d+) (?<Direction>[{AllDirections}])");
 
     public Rover(string status, Plateau plateau)
         : this(0, 0, Direction.N, plateau)
@@ -33,6 +33,10 @@ public record class Rover(Plateau Plateau)
         );
 
     public string Status => $"{PositionX} {PositionY} {Direction}";
+
+    public void Do(string moves)
+        => moves.AsEnumerable().ToList().ForEach(
+            move => Do(Enum.Parse<Move>($"{move}")));
 
     public void Do(Move move) => (PositionX, PositionY, Direction) = move switch {
         Move.R => Turn(true),

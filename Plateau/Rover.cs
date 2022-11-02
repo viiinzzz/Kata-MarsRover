@@ -16,7 +16,7 @@ public enum Action
     M
 }
 
-public record class Rover(int PositionX, int PositionY, Heading Heading)
+public record class Rover(int PositionX, int PositionY, Heading Heading, Plateau Plateau)
 {
     public string Status => $"{PositionX} {PositionY} {Heading}";
     void doAction(Action Action) => throw new NotImplementedException();

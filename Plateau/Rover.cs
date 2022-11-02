@@ -40,9 +40,14 @@ public record class Rover(Plateau Plateau)
         (PositionX, PositionY, Direction) = move switch
         {
             MarsRover.Move.L => (PositionX, PositionY, (Direction)(((int)Direction + 1) % 4)),
-            MarsRover.Move.R => (PositionX, PositionY, (Direction)((((int)Direction - 1) + 4) % 4)),
+            MarsRover.Move.R => (PositionX, PositionY, turn(true)),
             MarsRover.Move.M => (PositionX, PositionY, Direction), //we don't know yet how to move forward
             _ => throw new NotImplementedException()
         };
+    }
+
+    private Direction turn(bool clockwise)
+    {
+        return (Direction)(((int)Direction + (clockwise ? - 1 : 1) + 4) % 4);
     }
 }

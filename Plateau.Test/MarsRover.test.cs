@@ -117,4 +117,22 @@ public class PlateauTest
         rover.Do(Move.M);
         Check.That(rover.Status).IsEqualTo("6 5 E");
     }
+
+    [Fact]
+    public void check_Plateau_Fleet()
+    {
+        const string input = @"
+            5 5
+            1 2 N
+            LMLMLMLMM
+            3 3 E
+            MMRMMRMRRM
+        ";
+        const string output = @"
+            1 3 N
+            5 1 E
+        ";
+        var plateau = new Plateau(input);
+        Check.That(plateau.Result).IsEqualTo(output);
+    }
 }

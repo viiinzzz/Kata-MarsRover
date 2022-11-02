@@ -3,7 +3,7 @@ using System.Text.RegularExpressions;
 
 namespace MarsRover;
 
-public enum Heading
+public enum Direction
 {
     N,
     W,
@@ -11,29 +11,50 @@ public enum Heading
     E
 }
 
-public enum Action
+public enum Move
 {
     L,
     R,
     M
 }
 
-public record class Rover(int PositionX, int PositionY, Heading Heading, Plateau Plateau)
+public record class Rover(Plateau Plateau)
 {
-    private static string _allHeadings = Enum.GetValues(typeof(Heading))
-        .Cast<Heading>().Select(x => $"{x}")
+    public int PositionX { get; private set; } = 0;
+    public int PositionY { get; private set; } = 0;
+    public Direction Direction { get; private set; } = Direction.N;
+
+    public Rover(int positionX, int positionY, Direction direction, Plateau plateau)
+        : this(plateau) {
+        PositionX = positionX;
+        PositionY = positionY;
+        Direction = direction;
+    }
+
+    private static readonly string AllHeadings = Enum.GetValues(typeof(Direction))
+        .Cast<Direction>().Select(x => $"{x}")
         .Aggregate((x, y) => x + y);
 
-    private static Regex _statusRx = new Regex(@$"(?<PositionX>\d+) (?<PositionY>\d+) (?<Heading>[{_allHeadings}])");
+    private static readonly Regex StatusRx = new Regex(@$"(?<PositionX>\d+) (?<PositionY>\d+) (?<Direction>[{AllHeadings}])");
 
-    public Rover(string status, Plateau Plateau)
-        : this(0, 0, Heading.N, Plateau)
-        => (PositionX, PositionY, Heading) = (
-            int.Parse(_statusRx.Match(status).Groups["PositionX"].Value),
-            int.Parse(_statusRx.Match(status).Groups["PositionY"].Value),
-            Enum.Parse<Heading>(_statusRx.Match(status).Groups["Heading"].Value)
+    public Rover(string status, Plateau plateau)
+        : this(0, 0, Direction.N, plateau)
+        => (PositionX, PositionY, Direction) = (
+            int.Parse(StatusRx.Match(status).Groups["PositionX"].Value),
+            int.Parse(StatusRx.Match(status).Groups["PositionY"].Value),
+            Enum.Parse<Direction>(StatusRx.Match(status).Groups["Direction"].Value)
         );
 
-    public string Status => $"{PositionX} {PositionY} {Heading}";
-    void doAction(Action Action) => throw new NotImplementedException();
+    public string Status => $"{PositionX} {PositionY} {Direction}";
+
+    public void Move(Move move)
+    {
+        (PositionX, PositionY, Direction) = move switch
+        {
+            MarsRover.Move.L => (PositionX, PositionY, Heading: Direction), //we don't know yet how to turn left
+            MarsRover.Move.R => (PositionX, PositionY, Heading: Direction), //we don't know yet how to turn right
+            MarsRover.Move.M => (PositionX, PositionY, Heading: Direction), //we don't know yet how to move forward
+            _ => throw new NotImplementedException()
+        };
+    }
 }

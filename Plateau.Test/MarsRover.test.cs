@@ -17,23 +17,23 @@ public class PlateauTest
     public void check_Plateau_size()
     {
         var plateau = new Plateau(10, 10);
-        Check.That(plateau.width).IsEqualTo(10);
-        Check.That(plateau.height).IsEqualTo(10);
+        Check.That(plateau.Width).IsEqualTo(10);
+        Check.That(plateau.Height).IsEqualTo(10);
     }
 
     [Fact]
     public void check_Plateau_size_when_initialized_with_string()
     {
         var plateau = new Plateau("10 10");
-        Check.That(plateau.width).IsEqualTo(10);
-        Check.That(plateau.height).IsEqualTo(10);
+        Check.That(plateau.Width).IsEqualTo(10);
+        Check.That(plateau.Height).IsEqualTo(10);
     }
 
     [Fact]
     public void create_Rover()
     {
         var plateau = new Plateau(10, 10);
-        var rover = new Rover(5, 5, Heading.E, plateau);
+        var rover = new Rover(5, 5, Direction.E, plateau);
         Check.That(rover).IsNotEqualTo(null);
     }
 
@@ -41,7 +41,7 @@ public class PlateauTest
     public void check_Rover_initial_status()
     {
         var plateau = new Plateau(10, 10);
-        var rover = new Rover(5, 5, Heading.E, plateau);
+        var rover = new Rover(5, 5, Direction.E, plateau);
         Check.That(rover.Status).IsEqualTo("5 5 E");
     }
     [Fact]
@@ -50,5 +50,71 @@ public class PlateauTest
         var plateau = new Plateau("10 10");
         var rover = new Rover("5 5 E", plateau);
         Check.That(rover.Status).IsEqualTo("5 5 E");
+    }
+
+    [Fact]
+    public void check_Rover_turn_left_360()
+    {
+        var plateau = new Plateau("1 1");
+        var rover = new Rover("0 0 N", plateau);
+        rover.Move(Move.L);
+        Check.That(rover.Status).IsEqualTo("0 0 W");
+        rover.Move(Move.L);
+        Check.That(rover.Status).IsEqualTo("0 0 S");
+        rover.Move(Move.L);
+        Check.That(rover.Status).IsEqualTo("0 0 E");
+        rover.Move(Move.L);
+        Check.That(rover.Status).IsEqualTo("0 0 N");
+    }
+
+    [Fact]
+    public void check_Rover_turn_right_360()
+    {
+        var plateau = new Plateau("1 1");
+        var rover = new Rover("0 0 N", plateau);
+        rover.Move(Move.R);
+        Check.That(rover.Status).IsEqualTo("0 0 E");
+        rover.Move(Move.R);
+        Check.That(rover.Status).IsEqualTo("0 0 S");
+        rover.Move(Move.R);
+        Check.That(rover.Status).IsEqualTo("0 0 W");
+        rover.Move(Move.R);
+        Check.That(rover.Status).IsEqualTo("0 0 N");
+    }
+
+    [Fact]
+    public void check_Rover_move_forward_when_heading_north()
+    {
+        var plateau = new Plateau("10 10");
+        var rover = new Rover("5 5 N", plateau);
+        rover.Move(Move.M);
+        Check.That(rover.Status).IsEqualTo("5 6 N");
+    }
+
+    [Fact]
+    public void check_Rover_move_forward_when_heading_west()
+    {
+        var plateau = new Plateau("10 10");
+        var rover = new Rover("5 5 W", plateau);
+        rover.Move(Move.M);
+        Check.That(rover.Status).IsEqualTo("4 5 W");
+    }
+
+    [Fact]
+    public void check_Rover_move_forward_when_heading_south()
+    {
+        var plateau = new Plateau("10 10");
+        var rover = new Rover("5 5 S", plateau);
+        rover.Move(Move.M);
+        Check.That(rover.Status).IsEqualTo("5 4 S");
+    }
+
+    [Fact]
+    public void check_Rover_move_forward_when_heading_east()
+    {
+        var plateau = new Plateau("10 10");
+        var rover = new Rover("6 5 E", plateau);
+        rover.Move(Move.M);
+        Check.That(rover.Status).IsEqualTo("5 6 E");
     }
 }

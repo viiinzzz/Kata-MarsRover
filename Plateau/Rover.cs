@@ -89,32 +89,38 @@ public class Rover
 
     public (int PositionX, int PositionY, Direction Direction) DryRun(Move move) => move switch
     {
-        Move.R => Turn(true),
-        Move.L => Turn(false),
+        Move.R => TurnRight(),
+        Move.L => TurnLeft(),
         Move.M => Direction switch
         {
-            Direction.N => MoveY(true),
-            Direction.S => MoveY(false),
-            Direction.E => MoveX(true),
-            Direction.W => MoveX(false),
+            Direction.N => MoveNorth(),
+            Direction.S => MoveSouth(),
+            Direction.E => MoveEast(),
+            Direction.W => MoveWest(),
             _ => throw new NotImplementedException()
         },
         _ => throw new NotImplementedException()
     };
 
-    private (int PositionX, int PositionY, Direction Direction) MoveX(bool right) => (
+    (int PositionX, int PositionY, Direction Direction) MoveEast() => MoveX(true);
+    (int PositionX, int PositionY, Direction Direction) MoveWest() => MoveX(false);
+    (int PositionX, int PositionY, Direction Direction) MoveX(bool right) => (
         PositionX + (right ? 1 : -1),
         PositionY,
         Direction
         );
 
-    private (int PositionX, int PositionY, Direction Direction) MoveY(bool up) => (
+    (int PositionX, int PositionY, Direction Direction) MoveNorth() => MoveY(true);
+    (int PositionX, int PositionY, Direction Direction) MoveSouth() => MoveY(false);
+    (int PositionX, int PositionY, Direction Direction) MoveY(bool up) => (
         PositionX,
         PositionY + (up ? 1 : -1),
         Direction
         );
 
-    private (int PositionX, int PositionY, Direction Direction) Turn(bool clockwise) => (
+    (int PositionX, int PositionY, Direction Direction) TurnRight() => Turn(true);
+    (int PositionX, int PositionY, Direction Direction) TurnLeft() => Turn(false);
+    (int PositionX, int PositionY, Direction Direction) Turn(bool clockwise) => (
         PositionX,
         PositionY,
         (Direction)(((int)Direction + (clockwise ? - 1 : 1) + 4) % 4)

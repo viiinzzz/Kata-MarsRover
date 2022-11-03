@@ -12,17 +12,21 @@ code review *cf38e0ba199a8e667ea3100d6662f4b7a792dee7* - thanks *philgung*
  - [ ] Pareil, parseInt, parseDirection pourrait être sorti. 
  - [ ] De manière générale, faire des Actions ou des func avec une dépendance avec un variable extérieur/globale n'est pas une très bonne idée, difficile de gérer les effets de bords. A rapprocher des fonctions pures du paradigme fonctionnelle
  - [ ] Utiliser un tuple en signature de méthode publique va amener de la complexité en lisibilité. Pour moi utiliser un tuple ok, mais l'utiliser si cela reste dans le périmètre d'une méthode ou d'une classe. En revanche l'exposé, est pour moi plus un code smells. A mon sens, il faudrait plutot l'encapsuler dans un objet.
- - [ ] Turn(clockwise) ?? Je ne me souviens pas qu'on ait cette notion dans l'énoncé. Pourquoi ne pas faire simple et dire tournerAGauche et tournerADroite ?
- - [ ] Idem, au lieu de MoveX, MoveY, j'aurai préféré Avancer() ou Reculer(), et en fonction de la direction et de la position, tu adaptes. Sinon le nommage est trop technique selon moi, a t on vraiment besoin de savoir que tu as des coordonnées X et Y lorsqu'on déplace le rover ?
+ - [X] Turn(clockwise) ?? Je ne me souviens pas qu'on ait cette notion dans l'énoncé. Pourquoi ne pas faire simple et dire tournerAGauche et tournerADroite ?
+ - [X] Idem, au lieu de MoveX, MoveY, j'aurai préféré Avancer() ou Reculer(), et en fonction de la direction et de la position, tu adaptes. Sinon le nommage est trop technique selon moi, a t on vraiment besoin de savoir que tu as des coordonnées X et Y lorsqu'on déplace le rover ?
 
 # Générale
 
  - [ ] Je préfère éviter de gérer le flux de mon code avec des exceptions, je préférerai passer par des objets encapsulants.
- - [ ] Sur les tests, tu pourrais créer plusieurs fichiers de tests en fonction du périmètre fonctionnelle, cela faciliterait la lecture. 
- - [ ] L'input dans le constructeur qui est une chaine de caractère, amène beaucoup de complexité. Pourquoi ne pas être passer par un objet avec la position, la direction et les mouvements ?
- - [ ] Le nom de certain test est vague, par ex :
+ - [X] Sur les tests, tu pourrais créer plusieurs fichiers de tests en fonction du périmètre fonctionnelle, cela faciliterait la lecture. 
+ - [-] L'input dans le constructeur qui est une chaine de caractère, amène beaucoup de complexité. Pourquoi ne pas être passer par un objet avec la position, la direction et les mouvements ? ANSWER: c'est dans les spec!
+	> Input:
+	> The first line of input is the upper-right coordinates of the plateau, the lower-left coordinates are assumed to be 0,0.
+	> The rest of the input is information pertaining to the rovers that have been deployed. Each rover has two lines of input. The first line gives the rover's position, and the second line is a series of instructions telling the rover how to explore the plateau.
+	> The position is made up of two integers and a letter separated by spaces, corresponding to the x and y co-ordinates and the rover's orientation.
 
- - [ ] check_Plateau_Fleet_invalid_position3
+ - [X] Le nom de certain test est vague, par ex :
+ - [X] check_Plateau_Fleet_invalid_position3
 
 
 # found variants for later

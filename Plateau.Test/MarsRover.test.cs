@@ -19,23 +19,23 @@ public class PlateauTest
     public void check_Plateau_size()
     {
         var plateau = new Plateau(10, 10);
-        Check.That(plateau.Width).IsEqualTo(10);
-        Check.That(plateau.Height).IsEqualTo(10);
+        Check.That(plateau.Width).IsEqualTo(11);
+        Check.That(plateau.Height).IsEqualTo(11);
     }
 
     [Fact]
     public void check_Plateau_size_when_initialized_with_string()
     {
         var plateau = new Plateau("10 10");
-        Check.That(plateau.Width).IsEqualTo(10);
-        Check.That(plateau.Height).IsEqualTo(10);
+        Check.That(plateau.Width).IsEqualTo(11);
+        Check.That(plateau.Height).IsEqualTo(11);
     }
 
     [Fact]
     public void create_Rover()
     {
         var plateau = new Plateau(10, 10);
-        var rover = new Rover(5, 5, Direction.E, plateau);
+        var rover = new Rover(5, 5, Direction.E, plateau.ValidatePosition);
         Check.That(rover).IsNotEqualTo(null);
     }
 
@@ -43,14 +43,14 @@ public class PlateauTest
     public void check_Rover_initial_status()
     {
         var plateau = new Plateau(10, 10);
-        var rover = new Rover(5, 5, Direction.E, plateau);
+        var rover = new Rover(5, 5, Direction.E, plateau.ValidatePosition);
         Check.That(rover.Status).IsEqualTo("5 5 E");
     }
     [Fact]
     public void check_Rover_initial_status_when_initialized_with_string()
     {
         var plateau = new Plateau("10 10");
-        var rover = new Rover("5 5 E", plateau);
+        var rover = new Rover("5 5 E", plateau.ValidatePosition);
         Check.That(rover.Status).IsEqualTo("5 5 E");
     }
 
@@ -58,14 +58,14 @@ public class PlateauTest
     public void check_Rover_turn_left_360()
     {
         var plateau = new Plateau("1 1");
-        var rover = new Rover("0 0 N", plateau);
-        rover.Do(Move.L);
+        var rover = new Rover("0 0 N", plateau.ValidatePosition);
+        rover.Run(Move.L, plateau.ValidatePosition);
         Check.That(rover.Status).IsEqualTo("0 0 W");
-        rover.Do(Move.L);
+        rover.Run(Move.L, plateau.ValidatePosition);
         Check.That(rover.Status).IsEqualTo("0 0 S");
-        rover.Do(Move.L);
+        rover.Run(Move.L, plateau.ValidatePosition);
         Check.That(rover.Status).IsEqualTo("0 0 E");
-        rover.Do(Move.L);
+        rover.Run(Move.L, plateau.ValidatePosition);
         Check.That(rover.Status).IsEqualTo("0 0 N");
     }
 
@@ -73,14 +73,14 @@ public class PlateauTest
     public void check_Rover_turn_right_360()
     {
         var plateau = new Plateau("1 1");
-        var rover = new Rover("0 0 N", plateau);
-        rover.Do(Move.R);
+        var rover = new Rover("0 0 N", plateau.ValidatePosition);
+        rover.Run(Move.R, plateau.ValidatePosition);
         Check.That(rover.Status).IsEqualTo("0 0 E");
-        rover.Do(Move.R);
+        rover.Run(Move.R, plateau.ValidatePosition);
         Check.That(rover.Status).IsEqualTo("0 0 S");
-        rover.Do(Move.R);
+        rover.Run(Move.R, plateau.ValidatePosition);
         Check.That(rover.Status).IsEqualTo("0 0 W");
-        rover.Do(Move.R);
+        rover.Run(Move.R, plateau.ValidatePosition);
         Check.That(rover.Status).IsEqualTo("0 0 N");
     }
 
@@ -88,8 +88,8 @@ public class PlateauTest
     public void check_Rover_move_forward_when_heading_north()
     {
         var plateau = new Plateau("10 10");
-        var rover = new Rover("5 5 N", plateau);
-        rover.Do(Move.M);
+        var rover = new Rover("5 5 N", plateau.ValidatePosition);
+        rover.Run(Move.M, plateau.ValidatePosition);
         Check.That(rover.Status).IsEqualTo("5 6 N");
     }
 
@@ -97,8 +97,8 @@ public class PlateauTest
     public void check_Rover_move_forward_when_heading_west()
     {
         var plateau = new Plateau("10 10");
-        var rover = new Rover("5 5 W", plateau);
-        rover.Do(Move.M);
+        var rover = new Rover("5 5 W", plateau.ValidatePosition);
+        rover.Run(Move.M, plateau.ValidatePosition);
         Check.That(rover.Status).IsEqualTo("4 5 W");
     }
 
@@ -106,8 +106,8 @@ public class PlateauTest
     public void check_Rover_move_forward_when_heading_south()
     {
         var plateau = new Plateau("10 10");
-        var rover = new Rover("5 5 S", plateau);
-        rover.Do(Move.M);
+        var rover = new Rover("5 5 S", plateau.ValidatePosition);
+        rover.Run(Move.M, plateau.ValidatePosition);
         Check.That(rover.Status).IsEqualTo("5 4 S");
     }
 
@@ -115,8 +115,8 @@ public class PlateauTest
     public void check_Rover_move_forward_when_heading_east()
     {
         var plateau = new Plateau("10 10");
-        var rover = new Rover("5 5 E", plateau);
-        rover.Do(Move.M);
+        var rover = new Rover("5 5 E", plateau.ValidatePosition);
+        rover.Run(Move.M, plateau.ValidatePosition);
         Check.That(rover.Status).IsEqualTo("6 5 E");
     }
 
@@ -124,8 +124,8 @@ public class PlateauTest
     public void check_Rover_multiple_moves()
     {
         var plateau = new Plateau("10 10");
-        var rover = new Rover("5 5 S", plateau);
-        rover.Do("LMRMMRRR");
+        var rover = new Rover("5 5 S", plateau.ValidatePosition);
+        rover.Run("LMRMMRRR", plateau.ValidatePosition);
         /*
         5 5 S
         L -> 5 5 E
@@ -169,7 +169,7 @@ public class PlateauTest
     }
 
     [Fact]
-    public void check_Plateau_incorrect_plateau_width()
+    public void check_Plateau_invalid_plateau_width()
     {
         FluentActions.Invoking(() => new Plateau(-5, 5))
             .Should().Throw<Exception>()
@@ -177,7 +177,7 @@ public class PlateauTest
     }
 
     [Fact]
-    public void check_Plateau_incorrect_plateau_height()
+    public void check_Plateau_invalid_plateau_height()
     {
         FluentActions.Invoking(() => new Plateau(5, -5))
             .Should().Throw<Exception>()
@@ -185,7 +185,7 @@ public class PlateauTest
     }
 
     [Fact]
-    public void check_Plateau_incorrect_plateau_size1()
+    public void check_Plateau_invalid_plateau_size1()
     {
         const string input = "-5 5";
         FluentActions.Invoking(() => new Plateau(input))
@@ -194,7 +194,7 @@ public class PlateauTest
     }
 
     [Fact]
-    public void check_Plateau_incorrect_plateau_size2()
+    public void check_Plateau_invalid_plateau_size2()
     {
         const string input = "5 -5";
         FluentActions.Invoking(() => new Plateau(input))
@@ -203,7 +203,7 @@ public class PlateauTest
     }
 
     [Fact]
-    public void check_Plateau_Fleet_incorrect_move1()
+    public void check_Plateau_Fleet_invalid_moves()
     {
         const string input = @"
             5 5
@@ -211,50 +211,85 @@ public class PlateauTest
             LMLM_it_gonna_break_LMLMM
         ";
         FluentActions.Invoking(() => new Plateau(input))
-            .Should().Throw<Exception>().WithMessage("*rover moves invalid data*");
+            .Should().Throw<Exception>()
+            .WithMessage("parse error: rover moves invalid data --*");
     }
 
     [Fact]
-    public void check_Plateau_Fleet_incorrect_move2()
+    public void check_Plateau_Fleet_missing_moves()
     {
         const string input = @"
             5 5
             1 2 N
         ";
-        Check.ThatCode(() => new Plateau(input)).Throws<Exception>();
+        FluentActions.Invoking(() => new Plateau(input))
+            .Should().Throw<Exception>()
+            .WithMessage("parse error: rover configuration invalid data --*");
     }
 
     [Fact]
-    public void check_Plateau_Fleet_incorrect_move3()
+    public void check_Plateau_Fleet_invalid_status_direction()
     {
         const string input = @"
             5 5
-            1 2 N
-            LMLM_it_gonna_break_LMLMM
+            1 2 Z
+            LMLMLMLMM
         ";
-        Check.ThatCode(() => new Plateau(input)).Throws<Exception>();
+        FluentActions.Invoking(() => new Plateau(input))
+            .Should().Throw<Exception>()
+            .WithMessage("parse error: rover status invalid data --*");
     }
 
     [Fact]
-    public void check_Plateau_Fleet_incorrect_move4()
+    public void check_Plateau_Fleet_invalid_status_position1()
     {
         const string input = @"
             5 5
-            1 2 N
-            LMLM_it_gonna_break_LMLMM
+            -1 2 N
+            LMLMLMLMM
         ";
-        Check.ThatCode(() => new Plateau(input)).Throws<Exception>();
+        FluentActions.Invoking(() => new Plateau(input))
+            .Should().Throw<Exception>()
+            .WithMessage("parse error: rover status invalid data --*");
     }
 
     [Fact]
-    public void check_Plateau_Fleet_incorrect_direction()
+    public void check_Plateau_Fleet_invalid_status_position2()
+    {
+        const string input = @"
+            5 5
+            1 -2 N
+            LMLMLMLMM
+        ";
+        FluentActions.Invoking(() => new Plateau(input))
+            .Should().Throw<Exception>()
+            .WithMessage("parse error: rover status invalid data --*");
+    }
+
+    [Fact]
+    public void check_Plateau_Fleet_invalid_position3()
+    {
+        const string input = @"
+            5 5
+            1 N
+            LMLMLMLMM
+        ";
+        FluentActions.Invoking(() => new Plateau(input))
+            .Should().Throw<Exception>()
+            .WithMessage("parse error: rover status invalid data --*");
+    }
+
+    [Fact]
+    public void check_Plateau_Fleet_invalid_position4()
     {
         const string input = @"
             5 5
             1 2 it_gonna_break
             LMLMLMLMM
         ";
-        Check.ThatCode(() => new Plateau(input)).Throws<Exception>();
+        FluentActions.Invoking(() => new Plateau(input))
+            .Should().Throw<Exception>()
+            .WithMessage("parse error: rover status invalid data --*");
     }
 
 }

@@ -17,10 +17,21 @@ public class Plateau
         if (Height <= 0) throw new Exception("plateau size invalid data -- height must be strictly positive");
     }
 
-    public Plateau(int width, int height)
+    public void ValidatePosition(int positionX, int positionY)
     {
-        Width = width;
-        Height = height;
+        if (positionX < 0) throw new Exception("rover invalid move -- bumped into left border");
+        if (positionX >= Width) throw new Exception("rover invalid move -- bumped into right border");
+        if (positionY < 0) throw new Exception("rover invalid move -- bumped into bottom border");
+        if (positionY >= Height) throw new Exception("rover invalid move -- bumped into top border");
+    }
+
+    public string Result => Rovers.Count == 0 ? ""
+        : Rovers.Select(rover => rover.Status).Aggregate((x, y) => x + '\n' + y);
+
+    public Plateau(int MaximumX, int MaximumY)
+    {
+        Width = MaximumX + 1;
+        Height = MaximumY + 1;
         checkSize();
     }
 
@@ -49,17 +60,18 @@ public class Plateau
                 if (index == debugLines_Last)
                 {
                     var last = took.Last();
-                    debugLines = $"LINE:{last.index} {last.line}";
+                    debugLines = $"LINE:{last.index}: {last.line}";
                 }
                 else if (index == debugLines_All)
                 {
-                    debugLines = took.Select(line => $"LINE:{line.index} {line.line}")
+                    debugLines = took
+                        .Select(line => $"LINE:{line.index}: {line.line}")
                         .Aggregate((x, y) => x + " -- " + y);
                 }
                 else
                 {
                     var line = took[index];
-                    debugLines = $"LINE:{line.index} {line.line}";
+                    debugLines = $"LINE:{line.index}: {line.line}";
                 }
                 throw new Exception(@$"parse error: {purpose} {errorMessage(exception)} -- {debugLines}.");
             }
@@ -95,7 +107,8 @@ public class Plateau
         {
             var rx = SizeRx.Match(size);
             var parseInt = (string name) => int.Parse(rx.Groups[name].Value);
-            (Width, Height) = (parseInt("Width"), parseInt("Height"));
+            var (MaximumX, MaximumY) = (parseInt("Width"), parseInt("Height"));
+            (Width, Height) = (MaximumX + 1, MaximumY + 1);
             checkSize();
         });
 
@@ -109,13 +122,14 @@ public class Plateau
 
             Rover rover = null;
             Try("rover status", () => {
-                rover = new Rover(status, this);
+                rover = new Rover(status, ValidatePosition);
             }, exception => "invalid data", 0);
 
             Try("rover moves", () => {
-                rover.Do(moves);
+
+                rover.Run(moves, ValidatePosition);
                 Rovers.Add(rover);
-            }, exception => "invalid data", 1);
+            }, exception => exception is BumpException ? exception.Message : "invalid data", 1);
         }
 
         if (CanTake())
@@ -124,6 +138,4 @@ public class Plateau
         }
     }
 
-    public string Result => Rovers.Count == 0 ? ""
-        : Rovers.Select(rover => rover.Status).Aggregate((x, y) => x + '\n' + y);
 }

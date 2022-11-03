@@ -1,6 +1,6 @@
 using FluentAssertions;
 
-namespace MarsRover.Test;
+namespace MarsRover.Helpers.Test;
 
 public class Fail_when_Plateau_has_a_Rover_with
 {
@@ -12,7 +12,7 @@ public class Fail_when_Plateau_has_a_Rover_with
             1 2 N
             LMLM_it_gonna_break_LMLMM
         ";
-        FluentActions.Invoking(() => new Plateau(input))
+        FluentActions.Invoking(() => new MissionController(input))
             .Should().Throw<Exception>()
             .WithMessage("parse error: rover moves invalid data --*");
     }
@@ -24,7 +24,7 @@ public class Fail_when_Plateau_has_a_Rover_with
             5 5
             1 2 N
         ";
-        FluentActions.Invoking(() => new Plateau(input))
+        FluentActions.Invoking(() => new MissionController(input))
             .Should().Throw<Exception>()
             .WithMessage("parse error: rover configuration invalid data --*");
     }
@@ -37,7 +37,7 @@ public class Fail_when_Plateau_has_a_Rover_with
             1 2 Z
             LMLMLMLMM
         ";
-        FluentActions.Invoking(() => new Plateau(input))
+        FluentActions.Invoking(() => new MissionController(input))
             .Should().Throw<Exception>()
             .WithMessage("parse error: rover status invalid data --*");
     }
@@ -50,7 +50,7 @@ public class Fail_when_Plateau_has_a_Rover_with
             -1 2 N
             LMLMLMLMM
         ";
-        FluentActions.Invoking(() => new Plateau(input))
+        FluentActions.Invoking(() => new MissionController(input))
             .Should().Throw<Exception>()
             .WithMessage("parse error: rover status invalid data --*");
     }
@@ -63,7 +63,7 @@ public class Fail_when_Plateau_has_a_Rover_with
             1 -2 N
             LMLMLMLMM
         ";
-        FluentActions.Invoking(() => new Plateau(input))
+        FluentActions.Invoking(() => new MissionController(input))
             .Should().Throw<Exception>()
             .WithMessage("parse error: rover status invalid data --*");
     }
@@ -76,7 +76,7 @@ public class Fail_when_Plateau_has_a_Rover_with
             1 N
             LMLMLMLMM
         ";
-        FluentActions.Invoking(() => new Plateau(input))
+        FluentActions.Invoking(() => new MissionController(input))
             .Should().Throw<Exception>()
             .WithMessage("parse error: rover status invalid data --*");
     }

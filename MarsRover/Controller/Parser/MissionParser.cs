@@ -1,7 +1,6 @@
-﻿using MarsRover;
-using MarsRover.Parser;
+﻿using MarsRover.Models;
 
-namespace Kata_MarsRover.Parser;
+namespace MarsRover.Controller.Parser;
 
 public static class MissionParser
 {

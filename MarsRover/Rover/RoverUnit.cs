@@ -1,13 +1,13 @@
-﻿namespace MarsRover;
+﻿using MarsRover.Models;
 
-public enum Move { L, R, M }
+namespace MarsRover.Rover;
 
-public record class Rover(IMissionController Controller)
+public record class RoverUnit(IMissionController Controller)
 {
-    public Rover(int positionX, int positionY, Direction direction, IMissionController Controller) : this(Controller)
+    public RoverUnit(int positionX, int positionY, Direction direction, IMissionController Controller) : this(Controller)
         => doNext((positionX, positionY, direction));
 
-    public Rover(string status, IMissionController Controller) : this(Controller)
+    public RoverUnit(string status, IMissionController Controller) : this(Controller)
         => doNext(status);
 
     private int RoverId = Controller.GetRoverId();
@@ -21,13 +21,13 @@ public record class Rover(IMissionController Controller)
     public override string ToString() => @$"Rover#{RoverId}:
 {(History.Count == 0 ? "" : History.Select((step, index)
         => $"STEP:{index + 1}:{step.ToString()}")
-    .Aggregate((x,y) => x + "\n" + y))}";
+    .Aggregate((x, y) => x + "\n" + y))}";
 
     private void doNext(RoverStatus next)
         => History.Add(Status = Controller.ValidatePosition(next));
 
 
-    public Rover Run(string moves)
+    public RoverUnit Run(string moves)
     {
         moves.AsEnumerable()
             .Select((move, index) => (
@@ -47,7 +47,7 @@ public record class Rover(IMissionController Controller)
         return this;
     }
 
-    public Rover Run(Move move, string debugString = "single move")
+    public RoverUnit Run(Move move, string debugString = "single move")
     {
         try
         {
@@ -96,6 +96,6 @@ public record class Rover(IMissionController Controller)
 
     RoverStatus Turn(bool clockwise) => Status with
     {
-        Direction = (Direction)(((int)Status.Direction + (clockwise ? - 1 : 1) + 4) % 4)
+        Direction = (Direction)(((int)Status.Direction + (clockwise ? -1 : 1) + 4) % 4)
     };
 }

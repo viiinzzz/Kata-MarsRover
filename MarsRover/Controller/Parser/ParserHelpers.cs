@@ -1,4 +1,4 @@
-namespace MarsRover.Parser;
+namespace MarsRover.Controller.Parser;
 
 public static class ParserHelpers
 {

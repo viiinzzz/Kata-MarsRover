@@ -1,4 +1,4 @@
-﻿namespace MarsRover.Helpers;
+﻿namespace MarsRover.Models;
 
 public abstract record RecordWithValidation
 {

@@ -1,5 +1,3 @@
-using FluentAssertions;
-
 namespace MarsRover.Helpers.Test;
 
 public class Fail_when_Plateau_has

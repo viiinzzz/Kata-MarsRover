@@ -1,7 +1,6 @@
-﻿using MarsRover.Parser;
-using MarsRover.Helpers;
+﻿using MarsRover.Controller.Parser;
 
-namespace MarsRover;
+namespace MarsRover.Models;
 
 public record class Plateau(int MaximumX, int MaximumY) : RecordWithValidation
 {
@@ -15,7 +14,7 @@ public record class Plateau(int MaximumX, int MaximumY) : RecordWithValidation
     public int Height => MaximumY + 1;
 
     public static implicit operator Plateau((int MaximumX, int MaximumY) corner)
-        => new (corner.MaximumX, corner.MaximumY);
+        => new(corner.MaximumX, corner.MaximumY);
 
     public static implicit operator Plateau(string corner)
         => Parser.Parse(corner);

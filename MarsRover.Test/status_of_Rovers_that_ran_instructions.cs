@@ -1,6 +1,3 @@
-using MarsRover.Parser;
-using NFluent;
-
 namespace MarsRover.Helpers.Test;
 
 public class status_of_Rovers_that_ran_instructions
@@ -8,8 +5,8 @@ public class status_of_Rovers_that_ran_instructions
     [Fact]
     public void single_rover()
     {
-        var plateau = new MissionController("10 10");
-        var rover = plateau.AddRover("5 5 S");
+        var controller = new MissionController("10 10");
+        var rover = controller.AddRover("5 5 S");
         rover.Run("LMRMMRRR");
         /*
         5 5 S
@@ -39,8 +36,8 @@ public class status_of_Rovers_that_ran_instructions
             1 3 N
             5 1 E
         ";
-        var plateau = new MissionController(input);
-        Check.That(plateau.Result).IsEqualTo(output?.trimLines());
+        var controller = new MissionController(input);
+        Check.That(controller.Result).IsEqualTo(output?.trimLines());
     }
 
 }

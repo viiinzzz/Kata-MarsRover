@@ -1,6 +1,7 @@
-﻿using System.Text.RegularExpressions;
+﻿using MarsRover.Models;
+using System.Text.RegularExpressions;
 
-namespace MarsRover.Parser;
+namespace MarsRover.Controller.Parser;
 
 public class CornerParser : ICornerParser
 {

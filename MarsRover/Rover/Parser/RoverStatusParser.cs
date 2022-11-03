@@ -1,15 +1,16 @@
 ﻿using System.Text.RegularExpressions;
+using MarsRover.Models;
 
-namespace MarsRover.Parser;
+namespace MarsRover.Rover.Parser;
 
-public class RoverStatusParser: IRoverStatusParser
+public class RoverStatusParser : IRoverStatusParser
 {
     private static readonly string AllDirections = Enum.GetValues(typeof(Direction))
         .Cast<Direction>().Select(x => $"{x}")
         .Aggregate((x, y) => x + y);
 
     private static readonly Regex StatusRx =
-        new (@$"(?<PositionX>[+-]?\d+) +(?<PositionY>[+-]?\d+) +(?<Direction>[{AllDirections}])");
+        new(@$"(?<PositionX>[+-]?\d+) +(?<PositionY>[+-]?\d+) +(?<Direction>[{AllDirections}])");
 
     private static Func<string, int> ParseInt(Match rx)
         => name => int.Parse(rx.Groups[name].Value);

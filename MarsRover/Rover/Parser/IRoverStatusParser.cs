@@ -1,4 +1,6 @@
-﻿namespace MarsRover.Parser;
+﻿using MarsRover.Models;
+
+namespace MarsRover.Rover.Parser;
 
 public interface IRoverStatusParser
 {

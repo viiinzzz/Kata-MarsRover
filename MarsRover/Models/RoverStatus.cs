@@ -1,8 +1,7 @@
-﻿using MarsRover.Parser;
+﻿using MarsRover.Rover.Parser;
+using MarsRover.Rover;
 
-namespace MarsRover;
-
-public enum Direction { N, W, S, E }
+namespace MarsRover.Models;
 
 public record class RoverStatus(int PositionX, int PositionY, Direction Direction)
 {

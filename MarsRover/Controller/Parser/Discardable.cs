@@ -1,4 +1,4 @@
-﻿namespace MarsRover.Parser;
+﻿namespace MarsRover.Controller.Parser;
 
 public record class Discardable(string Value, Func<Exception, ParseException> Discard)
 {

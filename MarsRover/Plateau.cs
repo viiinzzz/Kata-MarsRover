@@ -17,12 +17,12 @@ public class Plateau
         if (Height <= 0) throw new Exception("plateau size invalid data -- height must be strictly positive");
     }
 
-    public void ValidatePosition(int positionX, int positionY)
+    public void ValidatePosition(RoverStatus status)
     {
-        if (positionX < 0) throw new Exception("rover invalid move -- bumped into left border");
-        if (positionX >= Width) throw new Exception("rover invalid move -- bumped into right border");
-        if (positionY < 0) throw new Exception("rover invalid move -- bumped into bottom border");
-        if (positionY >= Height) throw new Exception("rover invalid move -- bumped into top border");
+        if (status.PositionX < 0) throw new Exception("rover invalid move -- bumped into left border");
+        if (status.PositionX >= Width) throw new Exception("rover invalid move -- bumped into right border");
+        if (status.PositionY < 0) throw new Exception("rover invalid move -- bumped into bottom border");
+        if (status.PositionY >= Height) throw new Exception("rover invalid move -- bumped into top border");
     }
 
     public string Result => Rovers.Count == 0 ? ""

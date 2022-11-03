@@ -1,12 +1,6 @@
-﻿using MarsRover.Parser;
+﻿using Kata_MarsRover.Parser;
 
 namespace MarsRover;
-
-public interface IMissionController
-{
-    int GetRoverId();
-    RoverStatus ValidatePosition(RoverStatus status);
-}
 
 public class MissionController : IMissionController
 {
@@ -23,65 +17,86 @@ public class MissionController : IMissionController
     private int RoverId = 0;
     public int GetRoverId() => RoverId++;
 
-    public string Result => Rovers.Count == 0 ? ""
+    public string Result => Rovers.Count == 0
+        ? ""
         : Rovers.Select(rover => $"{rover.Status}")
             .Aggregate((x, y) => x + '\n' + y);
 
     public Rover AddRover(int PositionX, int PositionY, Direction Direction)
-    {
-        var rover = new Rover(PositionX, PositionY, Direction, this);
-        Rovers.Add(rover);
-        return rover;
-    }
+        => AddRover(new Rover(PositionX, PositionY, Direction, this));
 
     public Rover AddRover(string status)
+        => AddRover(new Rover(status, this));
+
+    private Rover AddRover(Rover rover)
     {
-        var rover = new Rover(status, this);
         Rovers.Add(rover);
         return rover;
     }
-
 
     public MissionController(int MaximumX, int MaximumY)
         => Plateau = new(MaximumX, MaximumY);
 
-    public MissionController(string config)
-    {
-        ParseConfig(config);
-    }
-
+    /*
     private void ParseConfig(string config)
     {
+        var Parser = new LinesParser(config);
 
-        // parsing helpers
-        var Parser = new MissionParser(config);
-
-        // effectively parse
-
-        Parser.TryTakeOneLine("plateau corner", corner => Plateau = corner);
+        Parser.TryTakeOneLine("plateau corner",
+            corner => Plateau = corner);
 
         while (Parser.CanTake())
         {
             string status = "", moves = "";
-            Parser.TryTakeLines("rover configuration", 2, roverConfig =>
-            {
-                status = roverConfig[0];
-                moves = roverConfig[1];
-            });
+            Parser.TryTakeLines("rover configuration", 2,
+                roverConfig =>
+                {
+                    status = roverConfig[0];
+                    moves = roverConfig[1];
+                });
 
             Rover rover = null;
-            Parser.Try("rover status", () => { rover = new Rover(status, this); }, exception => "invalid data", 0);
+            Parser.Try("rover status",
+                () => { rover = new Rover(status, this); },
+                exception => "invalid data", 0);
 
-            Parser.Try("rover moves", () =>
-            {
-                rover.Run(moves);
-                Rovers.Add(rover);
-            }, exception => exception is BumpException ? exception.Message : "invalid data", 1);
+            Parser.Try("rover moves",
+                () =>
+                {
+                    rover.Run(moves);
+                    Rovers.Add(rover);
+                },
+                exception => exception is BumpException ? exception.Message : "invalid data", 1);
         }
 
         if (Parser.CanTake())
         {
-            Parser.TryTakeOneLine("rover configuration", line => { throw new Exception(); });
+            Parser.TryTakeOneLine("rover configuration",
+                line => throw new Exception());
         }
     }
+    */
+
+    public MissionController(string config)
+        //=> ParseConfig(config);
+    {
+        var Mission = MissionParser.Parse(config);
+
+        this.Plateau = Mission.cornerDefinition;
+
+        Mission.RoverDefinitions.ForEach(roverDefinition =>
+        {
+            Rover rover = null;
+            roverDefinition.status.Try(status =>
+            {
+                rover = new Rover(status, this);
+                if (rover == null) throw new Exception();
+            });
+            roverDefinition.moves.Try(moves =>
+            {
+                Rovers.Add(rover.Run(moves));
+            });
+        });
+    }
+
 }

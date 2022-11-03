@@ -27,8 +27,9 @@ public record class Rover(IMissionController Controller)
         => History.Add(Status = Controller.ValidatePosition(next));
 
 
-    public void Run(string moves)
-        => moves.AsEnumerable()
+    public Rover Run(string moves)
+    {
+        moves.AsEnumerable()
             .Select((move, index) => (
                 move,
                 index: index + 1,
@@ -43,12 +44,15 @@ public record class Rover(IMissionController Controller)
                 Enum.Parse<Move>($"{move.move}"),
                 move.debugString
             ));
+        return this;
+    }
 
-    public void Run(Move move, string debugString = "single move")
+    public Rover Run(Move move, string debugString = "single move")
     {
         try
         {
             doNext(DryRun(move));
+            return this;
         }
         catch (Exception e)
         {

@@ -26,7 +26,7 @@ public class Fail_when_Plateau_has
         const string input = "-5 5";
         FluentActions.Invoking(() => new MissionController(input))
             .Should().Throw<Exception>()
-            .WithMessage("parse error: plateau corner invalid data --*");
+            .WithMessage("plateau corner invalid data --*");
     }
 
     [Fact]
@@ -35,6 +35,6 @@ public class Fail_when_Plateau_has
         const string input = "5 -5";
         FluentActions.Invoking(() => new MissionController(input))
             .Should().Throw<Exception>()
-            .WithMessage("parse error: plateau corner invalid data --*");
+            .WithMessage("plateau corner invalid data --*");
     }
 }

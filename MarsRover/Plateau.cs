@@ -26,7 +26,8 @@ public class Plateau
     }
 
     public string Result => Rovers.Count == 0 ? ""
-        : Rovers.Select(rover => rover.Status).Aggregate((x, y) => x + '\n' + y);
+        : Rovers.Select(rover => $"{rover.Status}")
+            .Aggregate((x, y) => x + '\n' + y);
 
     public Plateau(int MaximumX, int MaximumY)
     {

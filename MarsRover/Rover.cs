@@ -4,14 +4,13 @@ public enum Move { L, R, M }
 
 public class Rover
 {
-    private RoverStatus _status = new(0, 0, Direction.N);
-    public string Status => _status.ToString();
+    public RoverStatus Status { get; private set; } = new(0, 0, Direction.N);
 
     public Rover(int positionX, int positionY, Direction direction,
         Action<RoverStatus> ValidatePosition)
     {
-        _status = new(positionX, positionY, direction);
-        ValidatePosition(_status);
+        Status = new(positionX, positionY, direction);
+        ValidatePosition(Status);
     }
 
 
@@ -21,7 +20,7 @@ public class Rover
     {
         var next = (RoverStatus)status;
         ValidatePosition(next);
-        _status = next;
+        Status = next;
     }
 
     public void Run(string moves,
@@ -57,7 +56,7 @@ public class Rover
         {
             var next = DryRun(move);
             ValidatePosition(next);
-            _status = next;
+            Status = next;
         }
         catch (Exception e)
         {
@@ -69,7 +68,7 @@ public class Rover
     {
         Move.R => TurnRight(),
         Move.L => TurnLeft(),
-        Move.M => _status.Direction switch
+        Move.M => Status.Direction switch
         {
             Direction.N => MoveNorth(),
             Direction.S => MoveSouth(),
@@ -83,21 +82,21 @@ public class Rover
     RoverStatus MoveEast() => MoveX(true);
     RoverStatus MoveWest() => MoveX(false);
 
-    RoverStatus MoveX(bool increase) => _status with
+    RoverStatus MoveX(bool increase) => Status with
     {
-        PositionX = _status.PositionX + (increase ? 1 : -1)
+        PositionX = Status.PositionX + (increase ? 1 : -1)
     };
 
     RoverStatus MoveNorth() => MoveY(true);
     RoverStatus MoveSouth() => MoveY(false);
-    RoverStatus MoveY(bool increase) => _status with
+    RoverStatus MoveY(bool increase) => Status with
     {
-        PositionY = _status.PositionY + (increase? 1 : -1),
+        PositionY = Status.PositionY + (increase? 1 : -1),
     };
 
     RoverStatus TurnRight() => Turn(true);
     RoverStatus TurnLeft() => Turn(false);
-    RoverStatus Turn(bool clockwise) => _status with {
-        Direction = (Direction)(((int)_status.Direction + (clockwise ? - 1 : 1) + 4) % 4)
+    RoverStatus Turn(bool clockwise) => Status with {
+        Direction = (Direction)(((int)Status.Direction + (clockwise ? - 1 : 1) + 4) % 4)
     };
 }

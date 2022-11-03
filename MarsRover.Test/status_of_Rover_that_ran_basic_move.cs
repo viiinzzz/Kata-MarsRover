@@ -10,7 +10,7 @@ public class status_of_Rover_that_ran_basic_move
         var plateau = new Plateau("10 10");
         var rover = new Rover("5 5 N", plateau.ValidatePosition);
         rover.Run(Move.M, plateau.ValidatePosition);
-        Check.That(rover.Status).IsEqualTo("5 6 N");
+        Check.That(rover.Status.ToString()).IsEqualTo("5 6 N");
     }
 
     [Fact]
@@ -19,7 +19,7 @@ public class status_of_Rover_that_ran_basic_move
         var plateau = new Plateau("10 10");
         var rover = new Rover("5 5 W", plateau.ValidatePosition);
         rover.Run(Move.M, plateau.ValidatePosition);
-        Check.That(rover.Status).IsEqualTo("4 5 W");
+        Check.That(rover.Status.ToString()).IsEqualTo("4 5 W");
     }
 
     [Fact]
@@ -28,7 +28,7 @@ public class status_of_Rover_that_ran_basic_move
         var plateau = new Plateau("10 10");
         var rover = new Rover("5 5 S", plateau.ValidatePosition);
         rover.Run(Move.M, plateau.ValidatePosition);
-        Check.That(rover.Status).IsEqualTo("5 4 S");
+        Check.That(rover.Status.ToString()).IsEqualTo("5 4 S");
     }
 
     [Fact]
@@ -37,6 +37,6 @@ public class status_of_Rover_that_ran_basic_move
         var plateau = new Plateau("10 10");
         var rover = new Rover("5 5 E", plateau.ValidatePosition);
         rover.Run(Move.M, plateau.ValidatePosition);
-        Check.That(rover.Status).IsEqualTo("6 5 E");
+        Check.That(rover.Status.ToString()).IsEqualTo("6 5 E");
     }
 }

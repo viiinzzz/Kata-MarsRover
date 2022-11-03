@@ -21,7 +21,7 @@ public class status_of_Rovers_that_ran_instructions
         R -> 6 3 N
         R -> 6 3 E
          */
-        Check.That(rover.Status).IsEqualTo("6 3 E");
+        Check.That(rover.Status.ToString()).IsEqualTo("6 3 E");
     }
 
     [Fact]

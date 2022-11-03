@@ -40,7 +40,7 @@ public class Create
     {
         var plateau = new Plateau(10, 10);
         var rover = new Rover(5, 5, Direction.E, plateau.ValidatePosition);
-        Check.That(rover.Status).IsEqualTo("5 5 E");
+        Check.That(rover.Status.ToString()).IsEqualTo("5 5 E");
     }
 
     [Fact]
@@ -48,6 +48,6 @@ public class Create
     {
         var plateau = new Plateau("10 10");
         var rover = new Rover("5 5 E", plateau.ValidatePosition);
-        Check.That(rover.Status).IsEqualTo("5 5 E");
+        Check.That(rover.Status.ToString()).IsEqualTo("5 5 E");
     }
 }

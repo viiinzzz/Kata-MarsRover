@@ -1,26 +1,33 @@
 ﻿using System.Text.RegularExpressions;
-using Microsoft.VisualBasic;
 
 namespace MarsRover;
 
 public class Plateau
 {
-    private static readonly Regex SizeRx = new Regex(@"(?<Width>\d+) (?<Height>\d+)");
+    private static readonly Regex SizeRx = new Regex(@"(?<Width>[+-]?\d+) +(?<Height>[+-]?\d+)");
 
     public int Width { get; private set; } = 0;
     public int Height { get; private set; } = 0;
+
     private List<Rover> Rovers = new();
+
+    private void checkSize()
+    {
+        if (Width <= 0) throw new Exception("plateau size invalid data -- width must be strictly positive");
+        if (Height <= 0) throw new Exception("plateau size invalid data -- height must be strictly positive");
+    }
 
     public Plateau(int width, int height)
     {
         Width = width;
         Height = height;
+        checkSize();
     }
 
     public Plateau(string config)
     {
-        var lines = config.Split(new []{ '\r', '\n' },
-            StringSplitOptions.RemoveEmptyEntries)
+        var lines = config
+            .Split(new []{ '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries)
             .Select(line => line.Trim())
             .Where(line => line.Length > 0)
             .Select((line, index) => (line, index + 1));
@@ -89,6 +96,7 @@ public class Plateau
             var rx = SizeRx.Match(size);
             var parseInt = (string name) => int.Parse(rx.Groups[name].Value);
             (Width, Height) = (parseInt("Width"), parseInt("Height"));
+            checkSize();
         });
 
         while (CanTake())

@@ -1,5 +1,7 @@
+using System.Security.Cryptography.X509Certificates;
 using Xunit;
 using NFluent;
+using FluentAssertions;
 using MarsRover;
 
 namespace MarsRover.Test;
@@ -165,4 +167,94 @@ public class PlateauTest
         var plateau = new Plateau(input);
         Check.That(plateau.Result).IsEqualTo(trimLines(output));
     }
+
+    [Fact]
+    public void check_Plateau_incorrect_plateau_width()
+    {
+        FluentActions.Invoking(() => new Plateau(-5, 5))
+            .Should().Throw<Exception>()
+            .WithMessage("plateau size invalid data -- width must be strictly positive");
+    }
+
+    [Fact]
+    public void check_Plateau_incorrect_plateau_height()
+    {
+        FluentActions.Invoking(() => new Plateau(5, -5))
+            .Should().Throw<Exception>()
+            .WithMessage("plateau size invalid data -- height must be strictly positive");
+    }
+
+    [Fact]
+    public void check_Plateau_incorrect_plateau_size1()
+    {
+        const string input = "-5 5";
+        FluentActions.Invoking(() => new Plateau(input))
+            .Should().Throw<Exception>()
+            .WithMessage("parse error: plateau size invalid data --*");
+    }
+
+    [Fact]
+    public void check_Plateau_incorrect_plateau_size2()
+    {
+        const string input = "5 -5";
+        FluentActions.Invoking(() => new Plateau(input))
+            .Should().Throw<Exception>()
+            .WithMessage("parse error: plateau size invalid data --*");
+    }
+
+    [Fact]
+    public void check_Plateau_Fleet_incorrect_move1()
+    {
+        const string input = @"
+            5 5
+            1 2 N
+            LMLM_it_gonna_break_LMLMM
+        ";
+        FluentActions.Invoking(() => new Plateau(input))
+            .Should().Throw<Exception>().WithMessage("*rover moves invalid data*");
+    }
+
+    [Fact]
+    public void check_Plateau_Fleet_incorrect_move2()
+    {
+        const string input = @"
+            5 5
+            1 2 N
+        ";
+        Check.ThatCode(() => new Plateau(input)).Throws<Exception>();
+    }
+
+    [Fact]
+    public void check_Plateau_Fleet_incorrect_move3()
+    {
+        const string input = @"
+            5 5
+            1 2 N
+            LMLM_it_gonna_break_LMLMM
+        ";
+        Check.ThatCode(() => new Plateau(input)).Throws<Exception>();
+    }
+
+    [Fact]
+    public void check_Plateau_Fleet_incorrect_move4()
+    {
+        const string input = @"
+            5 5
+            1 2 N
+            LMLM_it_gonna_break_LMLMM
+        ";
+        Check.ThatCode(() => new Plateau(input)).Throws<Exception>();
+    }
+
+    [Fact]
+    public void check_Plateau_Fleet_incorrect_direction()
+    {
+        const string input = @"
+            5 5
+            1 2 it_gonna_break
+            LMLMLMLMM
+        ";
+        Check.ThatCode(() => new Plateau(input)).Throws<Exception>();
+    }
+
 }

@@ -10,11 +10,6 @@ class BumpException : Exception
     public BumpException(string message) : base(message) { }
 }
 
-class OutsideException : Exception
-{
-    public OutsideException(string message) : base(message) { }
-}
-
 public class Rover
 {
     public int PositionX { get; private set; } = 0;

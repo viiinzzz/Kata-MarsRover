@@ -26,11 +26,15 @@ public record class Rover(Plateau Plateau)
 
     public Rover(string status, Plateau plateau)
         : this(0, 0, Direction.N, plateau)
-        => (PositionX, PositionY, Direction) = (
-            int.Parse(StatusRx.Match(status).Groups["PositionX"].Value),
-            int.Parse(StatusRx.Match(status).Groups["PositionY"].Value),
-            Enum.Parse<Direction>(StatusRx.Match(status).Groups["Direction"].Value)
+    {
+        var rx = StatusRx.Match(status);
+        var parseInt = (string name) => int.Parse(rx.Groups[name].Value);
+        var parseDirection = (string name) => Enum.Parse<Direction>(rx.Groups[name].Value);
+        (PositionX, PositionY, Direction) = (
+            parseInt("PositionX"), parseInt("PositionY"),
+            parseDirection("Direction")
         );
+    }
 
     public string Status => $"{PositionX} {PositionY} {Direction}";
 

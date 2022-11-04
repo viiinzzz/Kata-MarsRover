@@ -8,21 +8,21 @@ public class MissionController
 {
     public IPositionMaster PositionMaster { get; }// = new Plateau(1, 1);
 
-    private Fleet Fleet;
+    private IDispatcher dispatcher;
 
-    public string Result => $"{Fleet}";
+    public string Result => $"{dispatcher.PrintRovers()}";
 
     public Rover.RoverUnit AddRover(int PositionX, int PositionY, DirectionEnum Direction)
-        => Fleet.AddRover(PositionX, PositionY, Direction);
+        => dispatcher.AddRover(PositionX, PositionY, Direction);
 
     public Rover.RoverUnit AddRover(string status)
-        => Fleet.AddRover(status);
+        => dispatcher.AddRover(status);
 
     public MissionController(int MaximumX, int MaximumY)
     {
         PositionMaster = new Plateau(MaximumX, MaximumY);
 
-        Fleet = new(PositionMaster);
+        dispatcher = new Fleet(PositionMaster);
     }
 
     public MissionController(string config)
@@ -31,10 +31,10 @@ public class MissionController
 
         PositionMaster = (Plateau)Mission.cornerDefinition;
         
-        Fleet = new(PositionMaster);
+        dispatcher = new Fleet(PositionMaster);
 
         Mission.RoverDefinitions.ForEach(roverDefinition
-            => Fleet.TryAddRover(roverDefinition.status, roverDefinition.moves));
+            => dispatcher.TryAddRover(roverDefinition.status, roverDefinition.moves));
     }
 
 }

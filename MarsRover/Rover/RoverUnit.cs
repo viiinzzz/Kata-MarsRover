@@ -3,7 +3,7 @@ using MarsRover.Models;
 
 namespace MarsRover.Rover;
 
-public record class RoverUnit(IPositionMaster PositionMaster, int RoverId)
+public record class RoverUnit(IPositionMaster PositionMaster, int RoverId) : IDispatchable
 {
     public RoverUnit(int positionX, int positionY, DirectionEnum direction,
         IPositionMaster PositionMaster, int RoverId) : this(PositionMaster, RoverId)

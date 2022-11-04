@@ -1,6 +1,8 @@
-﻿namespace MarsRover.Controller.Parser;
+﻿using MarsRover.Models;
 
-public record class Discardable(string Value, Func<Exception, ParseException> Discard)
+namespace MarsRover.Controller.Parser;
+
+public record class Discardable(string Value, Func<Exception, ParseException> Discard) : IDiscardable
 {
     public void Try(Action<string> action)
     {

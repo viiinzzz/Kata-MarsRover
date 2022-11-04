@@ -1,9 +1,9 @@
-﻿using MarsRover.Controller.Parser;
-using MarsRover.Models;
+﻿using MarsRover.Models;
 
 namespace MarsRover.Controller;
 
-public record class Fleet(IPositionMaster PositionMaster) : IRoverIdentifier
+public record class Fleet(IPositionMaster PositionMaster)
+    : IRoverIdentifier, IDispatcher
 {
     private readonly List<Rover.RoverUnit> Rovers = new();
 
@@ -17,9 +17,11 @@ public record class Fleet(IPositionMaster PositionMaster) : IRoverIdentifier
 
     public int GetRoverId() => RoverId++;
 
-    public override string ToString() => Rovers.Count == 0 ? ""
+    public string PrintRovers() => Rovers.Count == 0 ? ""
         : Rovers.Select(rover => $"{rover.Status}")
             .Aggregate((x, y) => x + '\n' + y);
+
+    public override string ToString() => PrintRovers();
 
     public Rover.RoverUnit AddRover(int PositionX, int PositionY, DirectionEnum Direction)
         => Add(new Rover.RoverUnit(PositionX, PositionY, Direction, PositionMaster, GetRoverId()));
@@ -27,7 +29,7 @@ public record class Fleet(IPositionMaster PositionMaster) : IRoverIdentifier
     public Rover.RoverUnit AddRover(string status)
         => Add(new Rover.RoverUnit(status, PositionMaster, GetRoverId()));
 
-    public Rover.RoverUnit TryAddRover(Discardable status, Discardable moves)
+    public Rover.RoverUnit TryAddRover(IDiscardable status, IDiscardable moves)
     {
         Rover.RoverUnit rover = null;
 

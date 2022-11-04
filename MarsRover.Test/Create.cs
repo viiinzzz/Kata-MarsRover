@@ -38,7 +38,7 @@ public class Create
     {
         var controller = new MissionController(10, 10);
         var rover = controller.AddRover(5, 5, DirectionEnum.E);
-        Check.That(rover.StatusString).IsEqualTo("5 5 E");
+        Check.That(rover.PrintDispatch()).IsEqualTo("5 5 E");
     }
 
     [Fact]
@@ -46,6 +46,6 @@ public class Create
     {
         var controller = new MissionController("10 10");
         var rover = controller.AddRover("5 5 E");
-        Check.That(rover.StatusString).IsEqualTo("5 5 E");
+        Check.That(rover.PrintDispatch()).IsEqualTo("5 5 E");
     }
 }

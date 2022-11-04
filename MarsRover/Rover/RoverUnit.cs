@@ -15,11 +15,12 @@ public record class RoverUnit(IPositionMaster PositionMaster, int RoverId) : IDi
 
     public RoverStatus Status { get; private set; } = new(0, 0, DirectionEnum.N);
 
-    public string StatusString => Status.ToString();
+    public string PrintDispatch() => Status.ToString();
 
     private List<RoverStatus> History = new();
 
-    public override string ToString() => @$"Rover#{RoverId}:
+    public override string ToString() => Print();
+    public string Print() => @$"Rover#{RoverId}:
 {(History.Count == 0 ? "" : History.Select((step, index)
         => $"STEP:{index + 1}:{step.ToString()}")
     .Aggregate((x, y) => x + "\n" + y))}";
@@ -28,7 +29,7 @@ public record class RoverUnit(IPositionMaster PositionMaster, int RoverId) : IDi
         => History.Add(Status = (RoverStatus)PositionMaster.ValidatePosition(next));
 
 
-    public RoverUnit Run(string moves)
+    public IDispatchable Run(string moves)
     {
         moves.AsEnumerable()
             .Select((move, index) => (
@@ -48,7 +49,8 @@ public record class RoverUnit(IPositionMaster PositionMaster, int RoverId) : IDi
         return this;
     }
 
-    public RoverUnit Run(MoveEnum move, string debugString = "single move")
+    public IDispatchable Run(MoveEnum move) => Run(move, "single move");
+    public IDispatchable Run(MoveEnum move, string debugString)
     {
         try
         {

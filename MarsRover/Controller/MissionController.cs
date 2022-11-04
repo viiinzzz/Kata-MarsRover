@@ -10,12 +10,12 @@ public class MissionController
 
     private IDispatcher dispatcher;
 
-    public string Result => $"{dispatcher.PrintRovers()}";
+    public string PrintDispatch => $"{dispatcher.PrintDispatch()}";
 
-    public Rover.RoverUnit AddRover(int PositionX, int PositionY, DirectionEnum Direction)
+    public IDispatchable AddRover(int PositionX, int PositionY, DirectionEnum Direction)
         => dispatcher.AddRover(PositionX, PositionY, Direction);
 
-    public Rover.RoverUnit AddRover(string status)
+    public IDispatchable AddRover(string status)
         => dispatcher.AddRover(status);
 
     public MissionController(int MaximumX, int MaximumY)

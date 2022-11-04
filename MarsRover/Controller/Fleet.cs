@@ -5,9 +5,9 @@ namespace MarsRover.Controller;
 public record class Fleet(IPositionMaster PositionMaster)
     : IRoverIdentifier, IDispatcher
 {
-    private readonly List<Rover.RoverUnit> Rovers = new();
+    private readonly List<IDispatchable> Rovers = new();
 
-    private Rover.RoverUnit Add(Rover.RoverUnit rover)
+    private IDispatchable Add(IDispatchable rover)
     {
         Rovers.Add(rover);
         return rover;
@@ -17,19 +17,19 @@ public record class Fleet(IPositionMaster PositionMaster)
 
     public int GetRoverId() => RoverId++;
 
-    public string PrintRovers() => Rovers.Count == 0 ? ""
-        : Rovers.Select(rover => $"{rover.Status}")
+    public string PrintDispatch() => Rovers.Count == 0 ? ""
+        : Rovers.Select(rover => $"{rover.PrintDispatch()}")
             .Aggregate((x, y) => x + '\n' + y);
 
-    public override string ToString() => PrintRovers();
+    public override string ToString() => PrintDispatch();
 
-    public Rover.RoverUnit AddRover(int PositionX, int PositionY, DirectionEnum Direction)
+    public IDispatchable AddRover(int PositionX, int PositionY, DirectionEnum Direction)
         => Add(new Rover.RoverUnit(PositionX, PositionY, Direction, PositionMaster, GetRoverId()));
 
-    public Rover.RoverUnit AddRover(string status)
+    public IDispatchable AddRover(string status)
         => Add(new Rover.RoverUnit(status, PositionMaster, GetRoverId()));
 
-    public Rover.RoverUnit TryAddRover(IDiscardable status, IDiscardable moves)
+    public IDispatchable TryAddRover(IDiscardable status, IDiscardable moves)
     {
         Rover.RoverUnit rover = null;
 

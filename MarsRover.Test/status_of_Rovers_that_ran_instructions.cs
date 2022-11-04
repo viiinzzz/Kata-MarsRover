@@ -19,7 +19,7 @@ public class status_of_Rovers_that_ran_instructions
         R -> 6 3 N
         R -> 6 3 E
          */
-        Check.That(rover.StatusString).IsEqualTo("6 3 E");
+        Check.That(rover.PrintDispatch()).IsEqualTo("6 3 E");
     }
 
     [Fact]
@@ -37,7 +37,7 @@ public class status_of_Rovers_that_ran_instructions
             5 1 E
         ";
         var controller = new MissionController(input);
-        Check.That(controller.Result).IsEqualTo(output?.trimLines());
+        Check.That(controller.PrintDispatch).IsEqualTo(output?.trimLines());
     }
 
 }

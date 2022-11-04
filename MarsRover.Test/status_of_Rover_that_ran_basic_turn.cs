@@ -8,13 +8,13 @@ public class status_of_Rover_that_ran_basic_turn
         var controller = new MissionController("1 1");
         var rover = controller.AddRover("0 0 N");
         rover.Run(MoveEnum.L);
-        Check.That(rover.StatusString).IsEqualTo("0 0 W");
+        Check.That(rover.PrintDispatch()).IsEqualTo("0 0 W");
         rover.Run(MoveEnum.L);
-        Check.That(rover.StatusString).IsEqualTo("0 0 S");
+        Check.That(rover.PrintDispatch()).IsEqualTo("0 0 S");
         rover.Run(MoveEnum.L);
-        Check.That(rover.StatusString).IsEqualTo("0 0 E");
+        Check.That(rover.PrintDispatch()).IsEqualTo("0 0 E");
         rover.Run(MoveEnum.L);
-        Check.That(rover.StatusString).IsEqualTo("0 0 N");
+        Check.That(rover.PrintDispatch()).IsEqualTo("0 0 N");
     }
 
     [Fact]
@@ -23,12 +23,12 @@ public class status_of_Rover_that_ran_basic_turn
         var controller = new MissionController("1 1");
         var rover = controller.AddRover("0 0 N");
         rover.Run(MoveEnum.R);
-        Check.That(rover.StatusString).IsEqualTo("0 0 E");
+        Check.That(rover.PrintDispatch()).IsEqualTo("0 0 E");
         rover.Run(MoveEnum.R);
-        Check.That(rover.StatusString).IsEqualTo("0 0 S");
+        Check.That(rover.PrintDispatch()).IsEqualTo("0 0 S");
         rover.Run(MoveEnum.R);
-        Check.That(rover.StatusString).IsEqualTo("0 0 W");
+        Check.That(rover.PrintDispatch()).IsEqualTo("0 0 W");
         rover.Run(MoveEnum.R);
-        Check.That(rover.StatusString).IsEqualTo("0 0 N");
+        Check.That(rover.PrintDispatch()).IsEqualTo("0 0 N");
     }
 }

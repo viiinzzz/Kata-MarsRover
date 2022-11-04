@@ -2,8 +2,8 @@
 
 public interface IDispatcher
 {
-    public string PrintRovers();
-    public Rover.RoverUnit AddRover(int PositionX, int PositionY, DirectionEnum Direction);
-    public Rover.RoverUnit AddRover(string status);
-    public Rover.RoverUnit TryAddRover(IDiscardable status, IDiscardable moves);
+    public string PrintDispatch();
+    public IDispatchable AddRover(int PositionX, int PositionY, DirectionEnum Direction);
+    public IDispatchable AddRover(string status);
+    public IDispatchable TryAddRover(IDiscardable status, IDiscardable moves);
 }

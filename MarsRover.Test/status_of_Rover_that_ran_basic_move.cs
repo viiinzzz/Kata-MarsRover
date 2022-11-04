@@ -8,7 +8,7 @@ public class status_of_Rover_that_ran_basic_move
         var controller = new MissionController("10 10");
         var rover = controller.AddRover("5 5 N");
         rover.Run(MoveEnum.M);
-        Check.That(rover.StatusString).IsEqualTo("5 6 N");
+        Check.That(rover.PrintDispatch()).IsEqualTo("5 6 N");
     }
 
     [Fact]
@@ -17,7 +17,7 @@ public class status_of_Rover_that_ran_basic_move
         var controller = new MissionController("10 10");
         var rover = controller.AddRover("5 5 W");
         rover.Run(MoveEnum.M);
-        Check.That(rover.StatusString).IsEqualTo("4 5 W");
+        Check.That(rover.PrintDispatch()).IsEqualTo("4 5 W");
     }
 
     [Fact]
@@ -26,7 +26,7 @@ public class status_of_Rover_that_ran_basic_move
         var controller = new MissionController("10 10");
         var rover = controller.AddRover("5 5 S");
         rover.Run(MoveEnum.M);
-        Check.That(rover.StatusString).IsEqualTo("5 4 S");
+        Check.That(rover.PrintDispatch()).IsEqualTo("5 4 S");
     }
 
     [Fact]
@@ -35,6 +35,6 @@ public class status_of_Rover_that_ran_basic_move
         var controller = new MissionController("10 10");
         var rover = controller.AddRover("5 5 E");
         rover.Run(MoveEnum.M);
-        Check.That(rover.StatusString).IsEqualTo("6 5 E");
+        Check.That(rover.PrintDispatch()).IsEqualTo("6 5 E");
     }
 }

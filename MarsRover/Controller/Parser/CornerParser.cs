@@ -1,4 +1,4 @@
-﻿using MarsRover.Models;
+﻿using MarsRover.Controller.Data;
 using System.Text.RegularExpressions;
 
 namespace MarsRover.Controller.Parser;

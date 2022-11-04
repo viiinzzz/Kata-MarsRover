@@ -1,3 +1,3 @@
 ﻿namespace MarsRover.Models;
 
-public enum Move { L, R, M }
+public enum MoveEnum { L, R, M }

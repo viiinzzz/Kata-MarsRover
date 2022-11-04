@@ -1,18 +1,19 @@
-﻿using MarsRover.Models;
+﻿using MarsRover.Rover.Data;
+using MarsRover.Models;
 
 namespace MarsRover.Rover;
 
-public record class RoverUnit(IMissionController Controller)
+public record class RoverUnit(IPositionMaster PositionMaster, int RoverId)
 {
-    public RoverUnit(int positionX, int positionY, Direction direction, IMissionController Controller) : this(Controller)
+    public RoverUnit(int positionX, int positionY, DirectionEnum direction,
+        IPositionMaster PositionMaster, int RoverId) : this(PositionMaster, RoverId)
         => doNext((positionX, positionY, direction));
 
-    public RoverUnit(string status, IMissionController Controller) : this(Controller)
+    public RoverUnit(string status,
+        IPositionMaster PositionMaster, int RoverId) : this(PositionMaster, RoverId)
         => doNext(status);
 
-    private int RoverId = Controller.GetRoverId();
-
-    public RoverStatus Status { get; private set; } = new(0, 0, Direction.N);
+    public RoverStatus Status { get; private set; } = new(0, 0, DirectionEnum.N);
 
     public string StatusString => Status.ToString();
 
@@ -24,7 +25,7 @@ public record class RoverUnit(IMissionController Controller)
     .Aggregate((x, y) => x + "\n" + y))}";
 
     private void doNext(RoverStatus next)
-        => History.Add(Status = Controller.ValidatePosition(next));
+        => History.Add(Status = (RoverStatus)PositionMaster.ValidatePosition(next));
 
 
     public RoverUnit Run(string moves)
@@ -41,13 +42,13 @@ public record class RoverUnit(IMissionController Controller)
             ))
             .ToList()
             .ForEach(move => Run(
-                Enum.Parse<Move>($"{move.move}"),
+                Enum.Parse<MoveEnum>($"{move.move}"),
                 move.debugString
             ));
         return this;
     }
 
-    public RoverUnit Run(Move move, string debugString = "single move")
+    public RoverUnit Run(MoveEnum move, string debugString = "single move")
     {
         try
         {
@@ -60,16 +61,16 @@ public record class RoverUnit(IMissionController Controller)
         }
     }
 
-    public RoverStatus DryRun(Move move) => move switch
+    public RoverStatus DryRun(MoveEnum move) => move switch
     {
-        Move.R => TurnRight(),
-        Move.L => TurnLeft(),
-        Move.M => Status.Direction switch
+        MoveEnum.R => TurnRight(),
+        MoveEnum.L => TurnLeft(),
+        MoveEnum.M => Status.Direction switch
         {
-            Direction.N => MoveNorth(),
-            Direction.S => MoveSouth(),
-            Direction.E => MoveEast(),
-            Direction.W => MoveWest(),
+            DirectionEnum.N => MoveNorth(),
+            DirectionEnum.S => MoveSouth(),
+            DirectionEnum.E => MoveEast(),
+            DirectionEnum.W => MoveWest(),
             _ => throw new NotImplementedException()
         },
         _ => throw new NotImplementedException()
@@ -96,6 +97,6 @@ public record class RoverUnit(IMissionController Controller)
 
     RoverStatus Turn(bool clockwise) => Status with
     {
-        Direction = (Direction)(((int)Status.Direction + (clockwise ? -1 : 1) + 4) % 4)
+        Direction = (DirectionEnum)(((int)Status.Direction + (clockwise ? -1 : 1) + 4) % 4)
     };
 }

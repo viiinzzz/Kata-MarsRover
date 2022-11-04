@@ -1,8 +1,9 @@
 ﻿using MarsRover.Controller.Parser;
+using MarsRover.Models;
 
-namespace MarsRover.Models;
+namespace MarsRover.Controller.Data;
 
-public record class Plateau(int MaximumX, int MaximumY) : RecordWithValidation
+public record class Plateau(int MaximumX, int MaximumY) : RecordWithValidation, IPositionMaster
 {
     protected override void Validate()
     {
@@ -10,8 +11,8 @@ public record class Plateau(int MaximumX, int MaximumY) : RecordWithValidation
         if (MaximumY <= 0) throw new Exception("plateau corner invalid data -- MaximumY must be strictly positive");
     }
 
-    public int Width => MaximumX + 1;
-    public int Height => MaximumY + 1;
+    public int Width() => MaximumX + 1;
+    public int Height() => MaximumY + 1;
 
     public static implicit operator Plateau((int MaximumX, int MaximumY) corner)
         => new(corner.MaximumX, corner.MaximumY);
@@ -21,7 +22,7 @@ public record class Plateau(int MaximumX, int MaximumY) : RecordWithValidation
 
     private static readonly ICornerParser Parser = new CornerParser();
 
-    public RoverStatus ValidatePosition(RoverStatus status)
+    public BaseRoverStatus ValidatePosition(BaseRoverStatus status)
     {
         if (status.PositionX < 0) throw new Exception("rover invalid move -- bumped into left border");
         if (status.PositionY < 0) throw new Exception("rover invalid move -- bumped into bottom border");

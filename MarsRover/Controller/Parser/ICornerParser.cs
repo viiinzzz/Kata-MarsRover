@@ -1,4 +1,4 @@
-﻿using MarsRover.Models;
+﻿using MarsRover.Controller.Data;
 
 namespace MarsRover.Controller.Parser;
 

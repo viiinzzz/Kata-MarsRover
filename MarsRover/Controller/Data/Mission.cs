@@ -1,6 +1,6 @@
 ﻿using MarsRover.Controller.Parser;
 
-namespace MarsRover.Controller;
+namespace MarsRover.Controller.Data;
 
 public class Mission
 {

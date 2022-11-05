@@ -5,7 +5,7 @@ public class status_of_Rovers_that_ran_instructions
     [Fact]
     public void single_rover()
     {
-        var controller = new MissionController("10 10");
+        var controller = new MissionController("9 9");
         var rover = controller.AddRover("5 5 S");
         rover.Run("LMRMMRRR");
         /*

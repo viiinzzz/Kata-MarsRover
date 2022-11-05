@@ -23,20 +23,25 @@ public record class Fleet(IPositionMaster PositionMaster)
 
     public override string ToString() => PrintDispatch();
 
+    [Obsolete(@"AddRover(int PositionX, int PositionY, DirectionEnum Direction) is deprecated,
+please use AddRover(string status) instead.")]
     public IDispatchable AddRover(int PositionX, int PositionY, DirectionEnum Direction)
         => Add(new Rover.RoverUnit(PositionX, PositionY, Direction, PositionMaster, GetRoverId()));
 
+
+    IDispatchable taskNewRoverWithStatus(string status)
+        => new Rover.RoverUnit(status, PositionMaster, GetRoverId());
+
     public IDispatchable AddRover(string status)
-        => Add(new Rover.RoverUnit(status, PositionMaster, GetRoverId()));
+        => Add(taskNewRoverWithStatus(status));
 
     public IDispatchable TryAddRover(IDiscardable status, IDiscardable moves)
     {
-        Rover.RoverUnit rover = null;
-
-        status.Try(status =>
+        var rover = status.Try(status =>
         {
-            rover = new Rover.RoverUnit(status, PositionMaster, GetRoverId());
-            if (rover == null) throw new Exception();
+            var r = taskNewRoverWithStatus(status);
+            if (r == null) throw new Exception();
+            return r;
         });
 
         moves.Try(moves =>

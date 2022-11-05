@@ -3,11 +3,16 @@ using MarsRover.Rover.Parser;
 
 namespace MarsRover.Rover.Data;
 
-public record class RoverStatus(int PositionX, int PositionY, DirectionEnum Direction)
-    : BaseRoverStatus(PositionX, PositionY, Direction)
+public record class Location(int PositionX, int PositionY);
+
+public record class RoverStatus(Location Location, DirectionEnum Direction)
+    : BaseRoverStatus(Location.PositionX, Location.PositionY, Direction)
 {
     public static implicit operator RoverStatus((int PositionX, int PositionY, DirectionEnum Direction) status)
-        => new(status.PositionX, status.PositionY, status.Direction);
+        => new(new(status.PositionX, status.PositionY), status.Direction);
+
+    public static implicit operator RoverStatus((Location Location, DirectionEnum Direction) status)
+        => new(status.Location, status.Direction);
 
     public static implicit operator RoverStatus(string status)
         => Parser.Parse(status);

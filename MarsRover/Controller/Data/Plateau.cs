@@ -7,8 +7,10 @@ public record class Plateau(int MaximumX, int MaximumY) : RecordWithValidation, 
 {
     protected override void Validate()
     {
-        if (MaximumX <= 0) throw new Exception("plateau corner invalid data -- MaximumX must be strictly positive");
-        if (MaximumY <= 0) throw new Exception("plateau corner invalid data -- MaximumY must be strictly positive");
+        if (MaximumX <= 0 || MaximumX % 2 == 0)
+            throw new Exception("plateau has invalid corner -- MaximumX must be 1 or greater odd");
+        if (MaximumY <= 1)
+            throw new Exception("plateau has invalid corner -- MaximumY must be 1 or greater");
     }
 
     public int Width() => MaximumX + 1;
@@ -24,10 +26,14 @@ public record class Plateau(int MaximumX, int MaximumY) : RecordWithValidation, 
 
     public BaseRoverStatus ValidatePosition(BaseRoverStatus status)
     {
-        if (status.PositionX < 0) throw new Exception("rover invalid move -- bumped into left border");
-        if (status.PositionY < 0) throw new Exception("rover invalid move -- bumped into bottom border");
-        if (status.PositionX > MaximumX) throw new Exception("rover invalid move -- bumped into right border");
-        if (status.PositionY > MaximumY) throw new Exception("rover invalid move -- bumped into top border");
+        if (status.PositionX < 0) throw new Exception("invalid rover move -- bumped into West border");
+        if (status.PositionY < 0) throw new Exception("invalid rover move -- bumped into South border");
+        if (status.PositionX > MaximumX) throw new Exception("invalid rover move -- bumped into East border");
+        if (status.PositionY > MaximumY) throw new Exception("invalid rover move -- bumped into North border");
         return status;
     }
+
+    public bool IsNorthPole(BaseRoverStatus status) => status.PositionY == 0;
+    public bool IsSouthPole(BaseRoverStatus status) => status.PositionY == MaximumY;
+
 }

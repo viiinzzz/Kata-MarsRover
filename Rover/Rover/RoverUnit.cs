@@ -13,7 +13,7 @@ public record class RoverUnit(IPositionMaster PositionMaster, int RoverId) : IDi
         IPositionMaster PositionMaster, int RoverId) : this(PositionMaster, RoverId)
         => doNext(status);
 
-    public RoverStatus Status { get; private set; } = new(0, 0, DirectionEnum.N);
+    public RoverStatus Status { get; private set; } = new(new(0, 0), DirectionEnum.N);
 
     public string PrintDispatch() => Status.ToString();
 
@@ -63,6 +63,13 @@ public record class RoverUnit(IPositionMaster PositionMaster, int RoverId) : IDi
         }
     }
 
+
+
+
+
+
+
+
     public RoverStatus DryRun(MoveEnum move) => move switch
     {
         MoveEnum.R => TurnRight(),
@@ -78,27 +85,50 @@ public record class RoverUnit(IPositionMaster PositionMaster, int RoverId) : IDi
         _ => throw new NotImplementedException()
     };
 
+    RoverStatus TurnRight() => Turn(true);
+    RoverStatus TurnLeft() => Turn(false);
     RoverStatus MoveEast() => MoveX(true);
     RoverStatus MoveWest() => MoveX(false);
-
     RoverStatus MoveNorth() => MoveY(true);
     RoverStatus MoveSouth() => MoveY(false);
 
-    RoverStatus TurnRight() => Turn(true);
-    RoverStatus TurnLeft() => Turn(false);
+    RoverStatus Turn(bool clockwise) => Status with
+    {
+        Direction = (DirectionEnum)(((int)Status.Direction + (clockwise ? -1 : 1) + 4) % 4)
+    };
 
     RoverStatus MoveX(bool increase) => Status with
     {
         PositionX = Status.PositionX + (increase ? 1 : -1)
     };
 
-    RoverStatus MoveY(bool increase) => Status with
+    RoverStatus MoveY(bool increase)
+    {
+        var PastNorthPole = Status.Direction == DirectionEnum.N
+                            && Status.PositionY == PositionMaster.Width() - 1 && increase;
+        var PastSouthPole = Status.Direction == DirectionEnum.S
+                            && Status.PositionY == 0 && !increase;
+
+        return PastNorthPole ? MoveY_PastPole(true)
+            : PastSouthPole ? MoveY_PastPole(false)
+            : MoveY_NotPastPole(increase);
+    }
+
+    RoverStatus MoveY_NotPastPole(bool increase) => Status with
     {
         PositionY = Status.PositionY + (increase ? 1 : -1)
     };
 
-    RoverStatus Turn(bool clockwise) => Status with
+    RoverStatus MoveY_PastPole(bool north)
     {
-        Direction = (DirectionEnum)(((int)Status.Direction + (clockwise ? -1 : 1) + 4) % 4)
-    };
+        var Width = PositionMaster.Width();
+        int PositionX = (Status.PositionX + (Width / 2)) % Width;
+        
+        return Status with
+        {
+            Direction = north ? DirectionEnum.S : DirectionEnum.N,
+            PositionX = PositionX,
+        };
+    }
+
 }

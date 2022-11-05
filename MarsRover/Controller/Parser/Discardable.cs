@@ -5,10 +5,17 @@ namespace MarsRover.Controller.Parser;
 public record class Discardable(string Value, Func<Exception, ParseException> Discard) : IDiscardable
 {
     public void Try(Action<string> action)
+        => Try(arg =>
+        {
+            action(arg);
+            return true;
+        });
+
+    public T Try<T>(Func<string, T> func)
     {
         try
         {
-            action(Value);
+            return func(Value);
         }
         catch (Exception exception)
         {
@@ -48,4 +55,5 @@ public record class Discardable(string Value, Func<Exception, ParseException> Di
             throw new ParseException(@$"parse error: {purpose} {errorMessage(exception)} -- {debugLines}.");
         };
     }
+
 }

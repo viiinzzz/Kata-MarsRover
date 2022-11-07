@@ -1,4 +1,4 @@
-namespace MarsRover.Helpers.Test;
+namespace MarsRover.Test.MarsRover.Test;
 
 public class Fail_when_Plateau_has
 {

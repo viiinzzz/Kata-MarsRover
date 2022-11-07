@@ -1,4 +1,4 @@
-namespace MarsRover.Helpers.Test;
+namespace MarsRover.Test.MarsRover.Test;
 
 public class status_of_Rovers_that_ran_instructions
 {

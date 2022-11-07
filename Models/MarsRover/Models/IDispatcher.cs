@@ -3,7 +3,8 @@
 public interface IDispatcher
 {
     public string PrintDispatch();
-    public IDispatchable AddRover(int PositionX, int PositionY, DirectionEnum Direction);
+    // [Obsolete ("deprecated, please use AddRover(string status) instead")]
+    // protected IDispatchable AddRover(int PositionX, int PositionY, DirectionEnum Direction);
     public IDispatchable AddRover(string status);
     public IDispatchable TryAddRover(IDiscardable status, IDiscardable moves);
 }

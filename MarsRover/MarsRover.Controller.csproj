@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <RootNamespace>Kata_MarsRover</RootNamespace>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Roslyn.Analyzers" Version="1.0.3.4" />
+    <PackageReference Include="xunit.analyzers" Version="1.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Models\MarsRover.Models.csproj" />
+    <ProjectReference Include="..\Rover\MarsRover.Rover.csproj" />
+  </ItemGroup>
+
+</Project>

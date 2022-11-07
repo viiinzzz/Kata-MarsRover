@@ -1,4 +1,6 @@
-namespace MarsRover.Helpers.Test;
+using MarsRover.Models;
+
+namespace MarsRover.Test.MarsRover.Test;
 
 public class status_of_Rover_that_ran_basic_move
 {

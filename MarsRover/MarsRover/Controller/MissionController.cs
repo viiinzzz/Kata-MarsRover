@@ -4,7 +4,7 @@ using MarsRover.Models;
 
 namespace MarsRover.Controller;
 
-public class MissionController
+public record class MissionController(int UnitCount, int PositionX, int PositionY)
 {
     public IPositionMaster PositionMaster { get; }// = new Plateau(1, 1);
 
@@ -12,26 +12,28 @@ public class MissionController
 
     public string PrintDispatch => $"{dispatcher.PrintDispatch()}";
 
-    public IDispatchable AddRover(int PositionX, int PositionY, DirectionEnum Direction)
-        => dispatcher.AddRover(PositionX, PositionY, Direction);
-
     public IDispatchable AddRover(string status)
         => dispatcher.AddRover(status);
 
-    public MissionController(int MaximumX, int MaximumY)
+    public MissionController(int UnitCount, int PositionX, int PositionY, int MaximumX, int MaximumY)
+        : this(UnitCount, PositionX, PositionY)
     {
         PositionMaster = new Plateau(MaximumX, MaximumY);
 
-        dispatcher = new Fleet(PositionMaster);
+        dispatcher = new Fleet(UnitCount, PositionMaster);
     }
 
+    public MissionController(int MaximumX, int MaximumY)
+        : this(100, 0, 0, MaximumX, MaximumY) { }
+
     public MissionController(string config)
+        : this(100, 0, 0)
     {
         var Mission = MissionParser.Parse(config);
 
         PositionMaster = (Plateau)Mission.cornerDefinition;
         
-        dispatcher = new Fleet(PositionMaster);
+        dispatcher = new Fleet(UnitCount, PositionMaster);
 
         Mission.RoverDefinitions.ForEach(roverDefinition
             => dispatcher.TryAddRover(roverDefinition.status, roverDefinition.moves));

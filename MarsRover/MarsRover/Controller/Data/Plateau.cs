@@ -15,6 +15,10 @@ public record class Plateau(int MaximumX, int MaximumY) : RecordWithValidation, 
 
     public int Width() => MaximumX + 1;
     public int Height() => MaximumY + 1;
+    
+    public bool IsNorthPole(BaseRoverStatus status) => status.PositionY == MaximumY;
+    public bool IsSouthPole(BaseRoverStatus status) => status.PositionY == 0;
+
 
     public static implicit operator Plateau((int MaximumX, int MaximumY) corner)
         => new(corner.MaximumX, corner.MaximumY);
@@ -32,8 +36,5 @@ public record class Plateau(int MaximumX, int MaximumY) : RecordWithValidation, 
         if (status.PositionY > MaximumY) throw new Exception("invalid rover move -- bumped into North border");
         return status;
     }
-
-    public bool IsNorthPole(BaseRoverStatus status) => status.PositionY == 0;
-    public bool IsSouthPole(BaseRoverStatus status) => status.PositionY == MaximumY;
 
 }
